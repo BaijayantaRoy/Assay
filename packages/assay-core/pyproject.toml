@@ -1,0 +1,148 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "assay-core"
+version = "1.0.0"
+description = "Assay core — PromptFile spec implementation, plugin registry, renderers, providers, evaluators."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Assay contributors" }]
+keywords = ["prompt", "llm", "promptfile", "prompt-engineering", "mcp", "evals"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+  "pyyaml>=6.0",
+  "jinja2>=3.1",
+  "jsonschema>=4.20",
+  "httpx>=0.27",
+  "opentelemetry-api>=1.25",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.23",
+  "pytest-timeout>=2.3",
+  "hypothesis>=6.100",
+  "ruff>=0.6",
+  "opentelemetry-sdk>=1.25",
+]
+otel = [
+  "opentelemetry-sdk>=1.25",
+  "opentelemetry-exporter-otlp-proto-http>=1.25",
+]
+
+# ---------------------------------------------------------------------------
+# Built-in plugins are registered through the same entry-point mechanism that
+# third-party plugins use. There is no privileged path.
+# ---------------------------------------------------------------------------
+[project.entry-points."assay.renderers"]
+jinja2 = "assay_core.builtins.renderers:Jinja2Renderer"
+fstring = "assay_core.builtins.renderers:FStringRenderer"
+none = "assay_core.builtins.renderers:PassthroughRenderer"
+
+[project.entry-points."assay.providers"]
+openai = "assay_core.builtins.providers:OpenAIProvider"
+anthropic = "assay_core.builtins.providers:AnthropicProvider"
+google = "assay_core.builtins.providers:GoogleProvider"
+ollama = "assay_core.builtins.providers:OllamaProvider"
+openai_compatible = "assay_core.builtins.providers:OpenAICompatibleProvider"
+echo = "assay_core.builtins.providers:EchoProvider"
+
+[project.entry-points."assay.evaluators"]
+contains = "assay_core.builtins.evaluators:ContainsEvaluator"
+not_contains = "assay_core.builtins.evaluators:NotContainsEvaluator"
+not_empty    = "assay_core.builtins.evaluators:NotEmptyEvaluator"
+equals = "assay_core.builtins.evaluators:EqualsEvaluator"
+regex = "assay_core.builtins.evaluators:RegexEvaluator"
+json_valid = "assay_core.builtins.evaluators:JsonValidEvaluator"
+json_schema = "assay_core.builtins.evaluators:JsonSchemaEvaluator"
+cost_under = "assay_core.builtins.evaluators:CostUnderEvaluator"
+latency_under = "assay_core.builtins.evaluators:LatencyUnderEvaluator"
+llm_judge = "assay_core.builtins.evaluators:LLMJudgeEvaluator"
+# Trajectory assertions — they score how the agent worked, not just what it said.
+tool_called = "assay_core.builtins.trajectory:ToolCalledEvaluator"
+tool_not_called = "assay_core.builtins.trajectory:ToolNotCalledEvaluator"
+tool_call_order = "assay_core.builtins.trajectory:ToolCallOrderEvaluator"
+trajectory_accuracy = "assay_core.builtins.trajectory:TrajectoryAccuracyEvaluator"
+no_repeated_tool_call = "assay_core.builtins.trajectory:NoRepeatedToolCallEvaluator"
+iterations_under = "assay_core.builtins.trajectory:IterationsUnderEvaluator"
+tool_calls_under = "assay_core.builtins.trajectory:ToolCallsUnderEvaluator"
+budget_under = "assay_core.builtins.trajectory:BudgetUnderEvaluator"
+no_tool_errors = "assay_core.builtins.trajectory:NoToolErrorsEvaluator"
+no_denied_calls = "assay_core.builtins.trajectory:NoDeniedCallsEvaluator"
+completed = "assay_core.builtins.trajectory:CompletedEvaluator"
+verified = "assay_core.builtins.trajectory:VerifiedEvaluator"
+no_injection_compliance = "assay_core.builtins.trajectory:NoInjectionComplianceEvaluator"
+injection_detected = "assay_core.builtins.trajectory:InjectionDetectedEvaluator"
+cycles_under = "assay_core.builtins.trajectory:CyclesUnderEvaluator"
+goal_met = "assay_core.builtins.trajectory:GoalMetEvaluator"
+steps_verified = "assay_core.builtins.trajectory:StepsVerifiedEvaluator"
+memory_recalled = "assay_core.builtins.trajectory:MemoryRecalledEvaluator"
+memory_written = "assay_core.builtins.trajectory:MemoryWrittenEvaluator"
+
+# --- Harness extension points ---------------------------------------------
+[project.entry-points."assay.tools"]
+fs = "assay_core.builtins.tools:FileSystemTools"
+shell = "assay_core.builtins.tools:ShellTools"
+http = "assay_core.builtins.tools:HttpTools"
+prompt = "assay_core.builtins.tools:PromptTools"
+mock = "assay_core.builtins.tools:MockTools"
+
+[project.entry-points."assay.context"]
+none = "assay_core.builtins.context:NoContextStrategy"
+truncate = "assay_core.builtins.context:TruncateContextStrategy"
+selective_clear = "assay_core.builtins.context:SelectiveClearContextStrategy"
+compact = "assay_core.builtins.context:CompactContextStrategy"
+summarize = "assay_core.builtins.context:SummarizeContextStrategy"
+
+[project.entry-points."assay.memory"]
+jsonl = "assay_core.builtins.memory:JsonlMemory"
+memory = "assay_core.builtins.memory:InMemoryMemory"
+null = "assay_core.builtins.memory:NullMemory"
+
+[project.entry-points."assay.controllers"]
+policy = "assay_core.builtins.controllers:PolicyController"
+read_only = "assay_core.builtins.controllers:ReadOnlyController"
+
+[project.entry-points."assay.guardrails"]
+regex_block = "assay_core.builtins.guardrails:RegexBlockGuardrail"
+max_length = "assay_core.builtins.guardrails:MaxLengthGuardrail"
+pii = "assay_core.builtins.guardrails:PIIGuardrail"
+schema = "assay_core.builtins.guardrails:SchemaGuardrail"
+injection = "assay_core.builtins.guardrails:InjectionGuardrail"
+
+[project.entry-points."assay.stores"]
+file = "assay_core.builtins.stores:FileStore"
+
+[project.entry-points."assay.importers"]
+promptfoo = "assay_core.builtins.importers:PromptfooImporter"
+messages = "assay_core.builtins.importers:MessagesImporter"
+dotprompt = "assay_core.builtins.importers:DotpromptImporter"
+poml = "assay_core.builtins.importers:PomlImporter"
+langfuse = "assay_core.builtins.importers:LangfuseImporter"
+promptlayer = "assay_core.builtins.importers:PromptLayerImporter"
+
+[project.entry-points."assay.tracers"]
+opentelemetry = "assay_core.builtins.tracers:OpenTelemetryTracer"
+
+[project.entry-points."assay.optimizers"]
+reflective = "assay_core.builtins.optimizers:ReflectiveRewriteOptimizer"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/assay_core"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

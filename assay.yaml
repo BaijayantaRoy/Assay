@@ -1,0 +1,10 @@
+promptfile: 1
+name: assay
+prompts: ./prompts
+store: file
+defaults:
+  model: echo/echo
+  renderer: jinja2
+policy:
+  require_evals_for: [stable]
+  forbid_status: [archived]

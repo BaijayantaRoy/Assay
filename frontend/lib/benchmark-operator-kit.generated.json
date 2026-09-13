@@ -1,0 +1,8 @@
+{
+  "bytes": 67156,
+  "evidence_status": "operator-inputs-not-trial-evidence",
+  "file": "/benchmark/assay-assurance-wedge-v1.zip",
+  "file_count": 15,
+  "format": "deterministic-uncompressed-zip",
+  "sha256": "d91eca2b64995ef22724370b3e6700dd965f8ade83b9760ad507da94d6c43797"
+}

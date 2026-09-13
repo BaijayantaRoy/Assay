@@ -1,0 +1,89 @@
+# Mutation testing — too slow for every push, too valuable to run never.
+#
+# Each mutation breaks one claim the project makes, then runs the suite. A survivor means
+# that promise is undefended: we could ship the bug and nothing would go red. The fast
+# anchor check (`--check`) runs in the main CI workflow on every push; this is the real
+# thing.
+#
+# It opens an issue on failure rather than only reddening a badge, because a scheduled
+# job that fails quietly is a scheduled job nobody reads.
+
+name: Mutation
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"        # Mondays, 03:00 UTC
+  workflow_dispatch:            # and on demand, for anyone touching the test suite
+  pull_request:
+    paths:
+      # A PR that changes the tests or the modules they guard should prove the guarantees
+      # still hold before it lands, not a week later.
+      - "packages/assay-core/src/**"
+      - "packages/assay-core/tests/**"
+      - "tests/mutation/**"
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  mutate:
+    name: Break each claim, check the suite notices
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+
+      - name: Install packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e packages/assay-core -e packages/assay-cli
+          pip install pytest
+
+      - name: Anchors resolve to real code
+        run: python tests/mutation/run_mutations.py --check
+
+      - name: Baseline suite is green
+        # A mutation run against an already-failing suite reports every mutant as killed,
+        # which would be a false pass for exactly the reason this project cares about.
+        run: python -m pytest packages/assay-core/tests -q
+
+      - name: Run mutations
+        id: mutate
+        run: python tests/mutation/run_mutations.py | tee mutation-report.txt
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: mutation-report
+          path: mutation-report.txt
+
+      - name: Open an issue if a claim is undefended
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        with:
+          script: |
+            const fs = require('fs');
+            let report = 'report unavailable';
+            try { report = fs.readFileSync('mutation-report.txt', 'utf8'); } catch (e) {}
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Mutation testing: a documented claim is undefended',
+              labels: ['bug', 'tests'],
+              body: [
+                'A mutation survived: the suite passed with a deliberate bug in place,',
+                'so that behaviour could regress without CI noticing.',
+                '',
+                'See `tests/mutation/README.md` for the method and its limits.',
+                '',
+                '```',
+                report.slice(0, 60000),
+                '```',
+              ].join('\n'),
+            });

@@ -1,0 +1,109 @@
+{
+  "protocol": "assay-assurance-wedge-v1",
+  "version": 1,
+  "evidence_date": "2026-08-10",
+  "scope": "Portable assurance-as-code; not general AI engineering platform superiority",
+  "assay_product_id": "assay",
+  "target_products": [
+    "assay",
+    "promptfoo",
+    "langsmith",
+    "langfuse",
+    "braintrust"
+  ],
+  "qualification": {
+    "minimum_trials_per_product_metric": 3,
+    "minimum_distinct_operators": 2,
+    "require_all_metric_tasks": true,
+    "auditable_change_timebox_minutes": 45,
+    "require_task_author_operator_separation": true,
+    "require_raw_artifact_digest": true
+  },
+  "metrics": [
+    {
+      "id": "false-assurance-miss-rate",
+      "name": "False-assurance miss rate",
+      "kind": "loss_rate",
+      "denominator_field": "delivered_faults",
+      "success_field": "detected_faults",
+      "unit": "seeded faults missed / seeded faults delivered",
+      "assay_absolute_target": 0,
+      "relative_target_fraction": 0.5,
+      "tasks": [
+        "zero-usable-sample",
+        "unchecked-handoff",
+        "missing-cost-evidence",
+        "uncalibrated-judge"
+      ]
+    },
+    {
+      "id": "portable-evidence-loss-rate",
+      "name": "Portable-evidence loss rate",
+      "kind": "loss_rate",
+      "denominator_field": "seeded_fields",
+      "success_field": "preserved_fields",
+      "unit": "required evidence fields lost / required evidence fields seeded",
+      "assay_absolute_target": 0,
+      "relative_target_fraction": 0.5,
+      "tasks": [
+        "export-import-offline-review"
+      ]
+    },
+    {
+      "id": "auditable-change-effort",
+      "name": "Auditable-change effort",
+      "kind": "duration",
+      "value_field": "elapsed_minutes",
+      "unit": "median operator minutes",
+      "require_all_completed": true,
+      "relative_target_fraction": 0.5,
+      "tasks": [
+        "failing-then-passing-eval"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "zero-usable-sample",
+      "fixture": "fixtures/reporting-faults.json#zero-usable-sample",
+      "instruction": "Run an eval whose provider delivers no usable samples. Record whether the product withholds the rate instead of presenting a reassuring pass or zero.",
+      "success": "The fault is detected and the zero-usable denominator is explicit."
+    },
+    {
+      "id": "unchecked-handoff",
+      "fixture": "fixtures/reporting-faults.json#unchecked-handoff",
+      "instruction": "Run a multi-step workflow whose final output succeeds after an intermediate handoff is left unchecked. Record whether the product distinguishes final success from handoff verification.",
+      "success": "The unchecked handoff is represented and final success is not promoted to end-to-end verification."
+    },
+    {
+      "id": "missing-cost-evidence",
+      "fixture": "fixtures/reporting-faults.json#missing-cost-evidence",
+      "instruction": "Run an evaluation with missing usage or price evidence. Record whether the product labels cost as not checked instead of reporting a fabricated value.",
+      "success": "Missing cost evidence remains visibly unverified."
+    },
+    {
+      "id": "uncalibrated-judge",
+      "fixture": "fixtures/reporting-faults.json#uncalibrated-judge",
+      "instruction": "Use a judge without calibration evidence and inspect the resulting assurance report.",
+      "success": "The report states the calibration gap beside the judge result."
+    },
+    {
+      "id": "export-import-offline-review",
+      "fixture": "fixtures/portable-evidence.json",
+      "instruction": "Seed eval, control, provenance, lifecycle, and unknown-extension fields; use the product's supported export/import path; then review the result offline.",
+      "success": "Every required field is preserved or an explicit loss warning identifies it."
+    },
+    {
+      "id": "failing-then-passing-eval",
+      "fixture": "fixtures/auditable-change/",
+      "instruction": "From a clean environment, clone the seeded repository, make the supplied change, demonstrate a failing eval, fix the artifact, and produce reviewed passing evidence.",
+      "success": "A reviewer can trace the change from red to green using retained artifacts within the 45-minute timebox."
+    }
+  ],
+  "claim_policy": {
+    "minimum_comparators": 3,
+    "require_independent_reproduction": true,
+    "zero_comparator_baseline_cannot_prove_relative_improvement": true,
+    "all_primary_metrics_must_pass": true
+  }
+}

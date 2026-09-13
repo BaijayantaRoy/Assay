@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "assay-cli"
+version = "1.0.0"
+description = "assay — the Assay command line. Git-native prompt engineering."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = ["assay-core>=1.0.0,<2"]
+
+[project.optional-dependencies]
+rich = ["rich>=13.0"]
+serve = ["fastapi>=0.115,<1", "uvicorn>=0.32,<1"]
+
+[project.scripts]
+assay = "assay_cli.__main__:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/assay_cli"]

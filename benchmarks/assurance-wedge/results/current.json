@@ -1,0 +1,106 @@
+{
+  "claim_status": "withheld",
+  "claim_verified": false,
+  "competitive_kpis_proven": 0,
+  "evidence_date": "2026-08-10",
+  "limitations": [
+    "Component tests are not substituted for shared-task competitor measurements.",
+    "A product name in the trial file does not qualify it unless each metric meets trial and operator requirements.",
+    "Independent reproduction and raw artifacts remain mandatory for a verified claim."
+  ],
+  "metrics": [
+    {
+      "assay": {
+        "completed_trial_count": 0,
+        "covered_task_ids": [],
+        "missing_task_ids": [
+          "missing-cost-evidence",
+          "uncalibrated-judge",
+          "unchecked-handoff",
+          "zero-usable-sample"
+        ],
+        "operator_count": 0,
+        "product_id": "assay",
+        "qualified": false,
+        "trial_count": 0,
+        "usable_trial_count": 0,
+        "value": null
+      },
+      "best_comparator": null,
+      "id": "false-assurance-miss-rate",
+      "name": "False-assurance miss rate",
+      "qualified_comparator_count": 0,
+      "qualified_comparator_ids": [],
+      "reasons": [
+        "Assay lacks required trials, independent operators, or declared-task coverage.",
+        "No qualifying comparator result exists."
+      ],
+      "status": "not_measured",
+      "threshold_met": false,
+      "unit": "seeded faults missed / seeded faults delivered"
+    },
+    {
+      "assay": {
+        "completed_trial_count": 0,
+        "covered_task_ids": [],
+        "missing_task_ids": [
+          "export-import-offline-review"
+        ],
+        "operator_count": 0,
+        "product_id": "assay",
+        "qualified": false,
+        "trial_count": 0,
+        "usable_trial_count": 0,
+        "value": null
+      },
+      "best_comparator": null,
+      "id": "portable-evidence-loss-rate",
+      "name": "Portable-evidence loss rate",
+      "qualified_comparator_count": 0,
+      "qualified_comparator_ids": [],
+      "reasons": [
+        "Assay lacks required trials, independent operators, or declared-task coverage.",
+        "No qualifying comparator result exists."
+      ],
+      "status": "not_measured",
+      "threshold_met": false,
+      "unit": "required evidence fields lost / required evidence fields seeded"
+    },
+    {
+      "assay": {
+        "completed_trial_count": 0,
+        "covered_task_ids": [],
+        "missing_task_ids": [
+          "failing-then-passing-eval"
+        ],
+        "operator_count": 0,
+        "product_id": "assay",
+        "qualified": false,
+        "trial_count": 0,
+        "usable_trial_count": 0,
+        "value": null
+      },
+      "best_comparator": null,
+      "id": "auditable-change-effort",
+      "name": "Auditable-change effort",
+      "qualified_comparator_count": 0,
+      "qualified_comparator_ids": [],
+      "reasons": [
+        "Assay lacks required trials, independent operators, or declared-task coverage.",
+        "No qualifying comparator result exists."
+      ],
+      "status": "not_measured",
+      "threshold_met": false,
+      "unit": "median operator minutes"
+    }
+  ],
+  "minimum_comparators": 3,
+  "minimum_qualifying_trial_records": 40,
+  "minimum_record_gap": 40,
+  "primary_kpi_count": 3,
+  "protocol": "assay-assurance-wedge-v1",
+  "protocol_sha256": "e8918ecee09c53f73dd77cf6ce87ff2a1fb1da0e2930f31d0e1425b716c19bd9",
+  "qualifying_comparator_count": 0,
+  "recorded_trial_count": 0,
+  "trials_sha256": "7858cded4421771c15ade34338c189154ad2f9cb8274174a5183b158a05a9b49"
+}

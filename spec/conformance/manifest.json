@@ -1,0 +1,50 @@
+{
+  "suite": "promptfile-v1-cross-language",
+  "valid": [
+    {
+      "file": "valid/unknown.md",
+      "format": "md",
+      "id": "conformance/unknown",
+      "body_contains": "Preserve this body.",
+      "unknown": {
+        "x-future.nested.1.enabled": true,
+        "future_top_level.owner": "another-tool"
+      }
+    },
+    {
+      "file": "valid/chat.yaml",
+      "format": "yaml",
+      "id": "conformance/chat",
+      "body_contains": "",
+      "unknown": {
+        "x-runtime.timeout_ms": 2500
+      }
+    },
+    {
+      "file": "valid/machine.json",
+      "format": "json",
+      "id": "conformance/machine",
+      "body_contains": "Return {{ value }}.",
+      "unknown": {
+        "x-generator.build": 17
+      }
+    }
+  ],
+  "invalid": [
+    {
+      "file": "invalid/future.json",
+      "format": "json",
+      "error": "unsupported_version"
+    },
+    {
+      "file": "invalid/bad-id.yaml",
+      "format": "yaml",
+      "error": "validation"
+    },
+    {
+      "file": "invalid/duplicate.yaml",
+      "format": "yaml",
+      "error": "parse"
+    }
+  ]
+}

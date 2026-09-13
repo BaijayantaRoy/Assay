@@ -1,0 +1,90 @@
+site_name: Assay
+site_description: Portable assurance-as-code for prompts, agents, and verified loops
+site_url: https://baijayanta.github.io/Assay/
+repo_url: https://github.com/BaijayantaRoy/Assay
+repo_name: baijayanta/Assay
+edit_uri: edit/main/docs/
+docs_dir: docs
+strict: true
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.action.edit
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: deep purple
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+nav:
+  - Home: index.md
+  - Get started:
+      - User guide: user_guide.md
+      - Local workbench: local-ui.md
+      - Deployment: deployment.md
+      - Contributing: CONTRIBUTING.md
+      - Changelog: CHANGELOG.md
+  - Build:
+      - Knowledge centre: knowledge/README.md
+      - Evaluating agents: knowledge/evaluating-agents.md
+      - Agent security: knowledge/agent-security.md
+      - Context engineering: knowledge/context-engineering.md
+      - Harness engineering: knowledge/harness-engineering.md
+      - Loop engineering: knowledge/loop-engineering.md
+  - Architecture:
+      - Blueprint: architecture/BLUEPRINT.md
+      - Competitive benchmark: architecture/BENCHMARK.md
+      - Roadmap: architecture/ROADMAP.md
+      - Research: architecture/RESEARCH.md
+      - Decisions:
+          - Decision index: architecture/adr/README.md
+          - PromptFile substrate: architecture/adr/0001-promptfile-as-the-substrate.md
+          - Plugin-first core: architecture/adr/0002-plugin-first-core.md
+          - Capability negotiation: architecture/adr/0003-capability-negotiation.md
+          - Compatibility: architecture/adr/0004-compatibility-policy.md
+          - Offline first: architecture/adr/0005-offline-first.md
+          - MCP primary surface: architecture/adr/0006-mcp-as-primary-surface.md
+          - Fully open source: architecture/adr/0007-fully-open-source.md
+          - Research-driven priorities: architecture/adr/0008-research-driven-prioritization.md
+          - Name and spec separation: architecture/adr/0009-name-and-spec-brand-separation.md

@@ -1,0 +1,37 @@
+# ============================================================
+#  Assay Frontend — Dockerfile
+# ============================================================
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Install dependencies
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+
+# Copy source
+COPY frontend/ ./
+
+# The browser calls the same-origin /api/assay proxy. Only the server-side proxy knows
+# the container-network backend URL and credential.
+ENV ASSAY_BACKEND_URL=http://backend:8001
+RUN npm run build
+
+# --- Production stage ---
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+
+# Copy built assets
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+COPY LICENSE ./LICENSE
+
+EXPOSE 3000
+
+CMD ["node", "server.js"]

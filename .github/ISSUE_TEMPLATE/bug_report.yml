@@ -1,0 +1,56 @@
+name: Bug report
+description: Something behaved differently than documented.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before filing: `assay doctor` prints versions, plugin inventory and workspace
+        state. Pasting it below answers most of the questions we'd otherwise ask.
+
+        **If the bug is that Assay reported a misleading number** — a defence looking like
+        it held when it didn't, a rate computed from a run that produced nothing, a loop
+        claiming success it never verified — please report it through
+        [Security Advisories](../../security/advisories/new) instead. We treat misleading
+        assurance as a security issue.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you ran, what it did, and what you expected instead.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: >
+        Ideally a PromptFile plus the command. The offline `echo` provider makes most
+        things reproducible with no API key — if yours needs one, say so.
+      render: shell
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Which surface
+      options: [CLI, REST API, MCP server, Web workbench, Python SDK, TypeScript SDK, Not sure]
+    validations:
+      required: true
+
+  - type: textarea
+    id: doctor
+    attributes:
+      label: assay doctor
+      render: shell
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I am not pasting an API key, and my output has no secrets in it.
+          required: true

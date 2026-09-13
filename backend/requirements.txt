@@ -1,0 +1,21 @@
+# The engine. /v1 is implemented on assay-core, so the REST API, the CLI and the MCP
+# server share one runtime and cannot drift apart. Installed from the local monorepo.
+-e ./packages/assay-core
+
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+sqlmodel>=0.0.22
+chromadb>=0.5.0
+python-multipart>=0.0.12
+python-dotenv>=1.0.0
+httpx>=0.27.0
+tiktoken>=0.7.0
+alembic>=1.14.0
+pydantic-settings>=2.6.0
+
+# Vendor SDKs are used only by the legacy 0.x workbench routers. assay-core talks to
+# providers over plain HTTP and needs none of them, so these disappear once the
+# legacy API migration in docs/architecture/ROADMAP.md completes.
+openai>=1.50.0
+anthropic>=0.30.0
+google-generativeai>=0.8.0

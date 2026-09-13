@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" role="img" aria-label="Assay logo mark">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#171D2A"/><stop offset="1" stop-color="#080B11"/></linearGradient>
+    <linearGradient id="beam" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#F2B84B"/><stop offset=".54" stop-color="#7C83FF"/><stop offset="1" stop-color="#43C7E8"/></linearGradient>
+    <linearGradient id="proof" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8AF0C3"/><stop offset="1" stop-color="#16A66D"/></linearGradient>
+  </defs>
+  <rect x="4" y="4" width="152" height="152" rx="38" fill="url(#bg)" stroke="#303A50" stroke-width="2"/>
+  <path d="M36 116L72 42c3-7 13-7 16 0l36 74" fill="none" stroke="url(#beam)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M55 91h51" stroke="#EFF4FF" stroke-width="11" stroke-linecap="round"/>
+  <circle cx="36" cy="116" r="7" fill="#F2B84B"/>
+  <path d="M124 102l16 16-16 16-16-16z" fill="url(#proof)" stroke="#B9F8DD" stroke-width="2"/>
+  <path d="M117 118l5 5 10-11" fill="none" stroke="#07110D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,19 @@
+*, *::before, *::after {
+  animation: none !important;
+  caret-color: transparent !important;
+  transition: none !important;
+}
+
+html {
+  scrollbar-width: none !important;
+}
+
+::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Next.js' development launcher is tooling chrome, not product UI. It is absent from the
+   production build and must not create a false visual change in reviewed portal baselines. */
+nextjs-portal {
+  display: none !important;
+}

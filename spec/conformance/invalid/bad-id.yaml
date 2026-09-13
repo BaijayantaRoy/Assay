@@ -1,0 +1,3 @@
+promptfile: 1
+id: "NOT A VALID ID"
+body: Schema validation must reject this.

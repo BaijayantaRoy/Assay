@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" width="1200" height="300" role="img" aria-label="Assay — prompts and agents are source code. Measure them like it.">
+<defs>
+    <linearGradient id="bgstone" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#20242c"/>
+      <stop offset="100%" stop-color="#101216"/>
+    </linearGradient>
+    <linearGradient id="streakBig" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b9861a"/>
+      <stop offset="55%" stop-color="#e8b84b"/>
+      <stop offset="100%" stop-color="#f6d989"/>
+    </linearGradient>
+    <linearGradient id="streakMark" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b9861a"/>
+      <stop offset="55%" stop-color="#e8b84b"/>
+      <stop offset="100%" stop-color="#f6d989"/>
+    </linearGradient>
+    <clipPath id="clip"><rect x="0" y="0" width="1200" height="300" rx="0"/></clipPath>
+  </defs>
+
+  <rect width="1200" height="300" fill="url(#bgstone)"/>
+
+  <g clip-path="url(#clip)" opacity="0.5">
+    <path d="M -50 340 C 150 260, 300 180, 480 60" fill="none" stroke="url(#streakBig)" stroke-width="46" stroke-linecap="round" opacity="0.10"/>
+    <path d="M 700 360 C 900 260, 1050 160, 1260 20" fill="none" stroke="url(#streakBig)" stroke-width="60" stroke-linecap="round" opacity="0.07"/>
+  </g>
+
+  <!-- mark -->
+  <g transform="translate(70,90)">
+    <rect x="0" y="0" width="120" height="120" rx="26" fill="#181b21"/>
+    <rect x="0.5" y="0.5" width="119" height="119" rx="25.5" fill="none" stroke="#000" stroke-opacity="0.3"/>
+    <path d="M 28 86 C 43 75, 54 62, 65 47 C 73 37, 79 28, 87 21"
+          fill="none" stroke="url(#streakMark)" stroke-width="12" stroke-linecap="round"/>
+    <circle cx="88.5" cy="20" r="6" fill="#fbe9bd"/>
+  </g>
+
+  <!-- wordmark + tagline -->
+  <g font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif">
+    <text x="228" y="152" font-size="72" font-weight="700" fill="#f5f1e8" letter-spacing="1">Assay</text>
+    <text x="230" y="192" font-size="21" font-weight="400" fill="#a9a49a">Prompts and agents are source code. Measure them like it.</text>
+  </g>
+
+  <!-- right-side fine print: the definition, in the stone's own voice -->
+  <g font-family="Georgia, 'Times New Roman', serif" opacity="0.55">
+    <text x="1130" y="255" font-size="15" font-style="italic" fill="#cbd0d6" text-anchor="end">to assay: to test a material</text>
+    <text x="1130" y="276" font-size="15" font-style="italic" fill="#cbd0d6" text-anchor="end">to determine its true composition</text>
+  </g>
+</svg>

@@ -1,0 +1,472 @@
+{
+  "protocol": "assay-assurance-wedge-v1",
+  "protocol_sha256": "e8918ecee09c53f73dd77cf6ce87ff2a1fb1da0e2930f31d0e1425b716c19bd9",
+  "plan_kind": "role-template-not-evidence",
+  "identity_note": "Operator ids are assignment roles only. Replace them with real independent identities and confirm clean environments before executing any trial.",
+  "product_ids": [
+    "assay",
+    "promptfoo",
+    "langsmith",
+    "langfuse",
+    "braintrust"
+  ],
+  "operator_ids": [
+    "independent-operator-a",
+    "independent-operator-b"
+  ],
+  "task_author_id": "benchmark-task-author",
+  "claim_minimum_trial_records": 40,
+  "planned_trial_records": 50,
+  "assignments": [
+    {
+      "suggested_trial_id": "assay-false-assurance-miss-rate-01",
+      "product_id": "assay",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "zero-usable-sample",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "assay-false-assurance-miss-rate-02",
+      "product_id": "assay",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "unchecked-handoff",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "assay-false-assurance-miss-rate-03",
+      "product_id": "assay",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "missing-cost-evidence",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "assay-false-assurance-miss-rate-04",
+      "product_id": "assay",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "uncalibrated-judge",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "assay-portable-evidence-loss-rate-01",
+      "product_id": "assay",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "assay-portable-evidence-loss-rate-02",
+      "product_id": "assay",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "assay-portable-evidence-loss-rate-03",
+      "product_id": "assay",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "assay-auditable-change-effort-01",
+      "product_id": "assay",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "assay-auditable-change-effort-02",
+      "product_id": "assay",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "assay-auditable-change-effort-03",
+      "product_id": "assay",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-false-assurance-miss-rate-01",
+      "product_id": "promptfoo",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "zero-usable-sample",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-false-assurance-miss-rate-02",
+      "product_id": "promptfoo",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "unchecked-handoff",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-false-assurance-miss-rate-03",
+      "product_id": "promptfoo",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "missing-cost-evidence",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-false-assurance-miss-rate-04",
+      "product_id": "promptfoo",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "uncalibrated-judge",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-portable-evidence-loss-rate-01",
+      "product_id": "promptfoo",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-portable-evidence-loss-rate-02",
+      "product_id": "promptfoo",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-portable-evidence-loss-rate-03",
+      "product_id": "promptfoo",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-auditable-change-effort-01",
+      "product_id": "promptfoo",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-auditable-change-effort-02",
+      "product_id": "promptfoo",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "promptfoo-auditable-change-effort-03",
+      "product_id": "promptfoo",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-false-assurance-miss-rate-01",
+      "product_id": "langsmith",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "zero-usable-sample",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-false-assurance-miss-rate-02",
+      "product_id": "langsmith",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "unchecked-handoff",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-false-assurance-miss-rate-03",
+      "product_id": "langsmith",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "missing-cost-evidence",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-false-assurance-miss-rate-04",
+      "product_id": "langsmith",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "uncalibrated-judge",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-portable-evidence-loss-rate-01",
+      "product_id": "langsmith",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-portable-evidence-loss-rate-02",
+      "product_id": "langsmith",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-portable-evidence-loss-rate-03",
+      "product_id": "langsmith",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-auditable-change-effort-01",
+      "product_id": "langsmith",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-auditable-change-effort-02",
+      "product_id": "langsmith",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langsmith-auditable-change-effort-03",
+      "product_id": "langsmith",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-false-assurance-miss-rate-01",
+      "product_id": "langfuse",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "zero-usable-sample",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-false-assurance-miss-rate-02",
+      "product_id": "langfuse",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "unchecked-handoff",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-false-assurance-miss-rate-03",
+      "product_id": "langfuse",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "missing-cost-evidence",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-false-assurance-miss-rate-04",
+      "product_id": "langfuse",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "uncalibrated-judge",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-portable-evidence-loss-rate-01",
+      "product_id": "langfuse",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-portable-evidence-loss-rate-02",
+      "product_id": "langfuse",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-portable-evidence-loss-rate-03",
+      "product_id": "langfuse",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-auditable-change-effort-01",
+      "product_id": "langfuse",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-auditable-change-effort-02",
+      "product_id": "langfuse",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "langfuse-auditable-change-effort-03",
+      "product_id": "langfuse",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-false-assurance-miss-rate-01",
+      "product_id": "braintrust",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "zero-usable-sample",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-false-assurance-miss-rate-02",
+      "product_id": "braintrust",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "unchecked-handoff",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-false-assurance-miss-rate-03",
+      "product_id": "braintrust",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "missing-cost-evidence",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-false-assurance-miss-rate-04",
+      "product_id": "braintrust",
+      "metric_id": "false-assurance-miss-rate",
+      "task_id": "uncalibrated-judge",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-portable-evidence-loss-rate-01",
+      "product_id": "braintrust",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-portable-evidence-loss-rate-02",
+      "product_id": "braintrust",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-portable-evidence-loss-rate-03",
+      "product_id": "braintrust",
+      "metric_id": "portable-evidence-loss-rate",
+      "task_id": "export-import-offline-review",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-auditable-change-effort-01",
+      "product_id": "braintrust",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-auditable-change-effort-02",
+      "product_id": "braintrust",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-b",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    },
+    {
+      "suggested_trial_id": "braintrust-auditable-change-effort-03",
+      "product_id": "braintrust",
+      "metric_id": "auditable-change-effort",
+      "task_id": "failing-then-passing-eval",
+      "operator_id": "independent-operator-a",
+      "task_author_id": "benchmark-task-author",
+      "status": "identity-and-environment-not-confirmed"
+    }
+  ]
+}

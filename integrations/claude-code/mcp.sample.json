@@ -1,0 +1,12 @@
+{
+  "_comment": "Copy this to .mcp.json in your project root (or merge into an existing one). CLAUDE_PROJECT_DIR is substituted by Claude Code; replace it with an absolute path for other clients.",
+  "mcpServers": {
+    "assay": {
+      "command": "assay",
+      "args": ["mcp"],
+      "env": {
+        "ASSAY_WORKSPACE": "${CLAUDE_PROJECT_DIR}"
+      }
+    }
+  }
+}

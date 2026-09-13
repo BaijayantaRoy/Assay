@@ -1,0 +1,32 @@
+{
+  "name": "@assay/promptfile",
+  "version": "1.0.0",
+  "description": "Independent TypeScript reader/writer for the PromptFile v1 specification.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "schema", "README.md", "LICENSE"],
+  "scripts": {
+    "sync-schema": "node scripts/sync-schema.mjs",
+    "check-schema": "node scripts/sync-schema.mjs --check",
+    "build": "npm run sync-schema && tsc -p tsconfig.json",
+    "test": "npm run build && node tests/conformance.mjs",
+    "prepublishOnly": "npm test"
+  },
+  "engines": {"node": ">=18"},
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128" role="img" aria-label="Assay mark">
+<defs>
+    <linearGradient id="stone" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22262f"/>
+      <stop offset="100%" stop-color="#14161b"/>
+    </linearGradient>
+    <linearGradient id="streak" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#b9861a"/>
+      <stop offset="55%" stop-color="#e8b84b"/>
+      <stop offset="100%" stop-color="#f6d989"/>
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="1.5" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <rect x="4" y="4" width="120" height="120" rx="26" fill="url(#stone)"/>
+  <rect x="4.5" y="4.5" width="119" height="119" rx="25.5" fill="none" stroke="#000" stroke-opacity="0.25"/>
+
+  <!-- the touchstone streak: the mark a metal leaves when rubbed across dark stone -->
+  <g filter="url(#soft)">
+    <path d="M 30 92 C 46 80, 58 66, 70 50 C 78 39, 84 30, 92 22"
+          fill="none" stroke="url(#streak)" stroke-width="13" stroke-linecap="round"/>
+  </g>
+  <!-- the bright bead of pure metal at the streak's tip -->
+  <circle cx="93.5" cy="21" r="6.5" fill="#fbe9bd"/>
+  <circle cx="93.5" cy="21" r="6.5" fill="none" stroke="#f6d989" stroke-width="1.5" opacity="0.8"/>
+</svg>

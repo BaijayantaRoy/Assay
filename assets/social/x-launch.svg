@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-label="Assay launch visual for X">
+  <defs><linearGradient id="shade" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#06090F" stop-opacity=".94"/><stop offset=".42" stop-color="#06090F" stop-opacity=".7"/><stop offset=".7" stop-color="#06090F" stop-opacity=".12"/><stop offset="1" stop-color="#06090F" stop-opacity="0"/></linearGradient></defs>
+  <image href="x-launch-background.png" width="1600" height="900" preserveAspectRatio="xMidYMid slice"/>
+  <rect width="1600" height="900" fill="url(#shade)"/>
+  <g transform="translate(92 78)">
+    <rect width="84" height="84" rx="22" fill="#111725" stroke="#46536C" stroke-width="2"/>
+    <path d="M19 64L39 24c2-5 8-5 10 0l20 40" fill="none" stroke="#F2B84B" stroke-width="9" stroke-linecap="round"/><path d="M30 50h29" stroke="#F7F9FC" stroke-width="7" stroke-linecap="round"/><path d="M68 54l10 10-10 10-10-10z" fill="#34D399"/>
+  </g>
+  <g font-family="Inter,Segoe UI,Arial,sans-serif">
+    <text x="200" y="135" font-size="50" font-weight="780" fill="#F7F9FC">Assay</text>
+    <text x="94" y="304" font-size="62" font-weight="800" fill="#FFFFFF">Prompts became agents.</text>
+    <text x="94" y="377" font-size="62" font-weight="800" fill="#FFFFFF">Testing had to catch up.</text>
+    <rect x="96" y="422" width="104" height="7" rx="3.5" fill="#F2B84B"/>
+    <text x="96" y="508" font-size="38" font-weight="700" fill="#69E5AE">Assurance as code.</text>
+  </g>
+</svg>

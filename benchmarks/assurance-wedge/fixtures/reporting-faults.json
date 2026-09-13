@@ -1,0 +1,50 @@
+{
+  "fixture": "assurance-reporting-faults-v1",
+  "delivered_faults": 4,
+  "cases": [
+    {
+      "id": "zero-usable-sample",
+      "fault": "An evaluation attempted four cases but delivered zero usable outputs.",
+      "operator_input": {
+        "attempted": 4,
+        "usable": 0,
+        "passed": 0,
+        "failed": 0
+      },
+      "detected_when": "The product withholds the pass rate and visibly reports that zero samples were usable.",
+      "missed_when": "The product shows passed, 0%, 100%, or another numeric rate without the zero-usable gap beside it."
+    },
+    {
+      "id": "unchecked-handoff",
+      "fault": "A three-step workflow has a successful final result, but the second handoff was never checked.",
+      "operator_input": {
+        "final_result": "passed",
+        "handoffs": ["verified", "not_checked"]
+      },
+      "detected_when": "The product retains the unchecked handoff and does not promote final success into end-to-end verification.",
+      "missed_when": "The workflow is presented as fully passed without an explicit unchecked intermediate handoff."
+    },
+    {
+      "id": "missing-cost-evidence",
+      "fault": "A run completed without token usage, price source, or cost evidence.",
+      "operator_input": {
+        "output_available": true,
+        "usage_available": false,
+        "price_source_available": false
+      },
+      "detected_when": "Cost is reported as not checked or unavailable, with the missing evidence named.",
+      "missed_when": "The product reports zero cost or a numeric cost without supporting usage and price evidence."
+    },
+    {
+      "id": "uncalibrated-judge",
+      "fault": "A model judge emits a passing score but has no calibration dataset or agreement evidence.",
+      "operator_input": {
+        "judge_result": "passed",
+        "calibration_samples": 0,
+        "agreement_rate": null
+      },
+      "detected_when": "The judge result remains visible but the calibration gap is stated beside it.",
+      "missed_when": "The judge pass is presented as assurance without a visible calibration limitation."
+    }
+  ]
+}

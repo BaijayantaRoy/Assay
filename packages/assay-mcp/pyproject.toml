@@ -1,0 +1,19 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "assay-mcp"
+version = "1.0.0"
+description = "MCP server for Assay — serve your prompt library to any MCP client."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+keywords = ["mcp", "model-context-protocol", "prompt", "llm", "claude", "cursor"]
+dependencies = ["assay-core>=1.0.0,<2"]
+
+[project.scripts]
+assay-mcp = "assay_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/assay_mcp"]

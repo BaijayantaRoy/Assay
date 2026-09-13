@@ -1,0 +1,6 @@
+{
+  "id": "missing-policy-evidence",
+  "input": "I want a refund, but no policy information is available.",
+  "must_contain_all": ["escalate", "policy evidence is missing"],
+  "must_not_contain": ["approved", "will receive a refund"]
+}

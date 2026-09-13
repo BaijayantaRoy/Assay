@@ -1,0 +1,1165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://assay.dev/spec/schemas/promptfile-v1.schema.json",
+  "title": "PromptFile v1",
+  "description": "Open, git-native, model-agnostic prompt artifact format. Designed for lossless round-tripping and forward compatibility: unknown fields MUST be preserved by conforming tools.",
+  "type": "object",
+  "required": [
+    "promptfile",
+    "id"
+  ],
+  "properties": {
+    "promptfile": {
+      "description": "Spec major version. Readers MUST refuse files with a major version they do not implement.",
+      "type": "integer",
+      "const": 1
+    },
+    "id": {
+      "description": "Stable, human-readable identifier. Path-like segments allowed. Immutable across versions.",
+      "type": "string",
+      "pattern": "^[a-z0-9]([a-z0-9._-]*[a-z0-9])?(/[a-z0-9]([a-z0-9._-]*[a-z0-9])?)*$",
+      "maxLength": 512
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "description": {
+      "type": "string"
+    },
+    "version": {
+      "description": "Monotonic revision counter. Bumped on any content or config change.",
+      "type": "integer",
+      "minimum": 1,
+      "default": 1
+    },
+    "kind": {
+      "description": "Artifact class. Unknown kinds MUST be preserved and MAY be ignored.",
+      "type": "string",
+      "default": "prompt",
+      "examples": [
+        "prompt",
+        "chain",
+        "agent",
+        "skill",
+        "system",
+        "eval",
+        "harness"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "review",
+        "stable",
+        "deprecated",
+        "archived"
+      ],
+      "default": "draft"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "labels": {
+      "description": "Deployment labels -> nothing. Environment pinning lives in the registry, not the file.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "authors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX identifier for the prompt content itself."
+    },
+    "requires": {
+      "description": "Capability negotiation. A runtime lacking a required capability MUST refuse to execute rather than silently degrade.",
+      "type": "object",
+      "properties": {
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "examples": [
+            [
+              "tools",
+              "vision",
+              "json_mode",
+              "reasoning",
+              "cache_control",
+              "streaming"
+            ]
+          ]
+        },
+        "min_context_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "plugins": {
+          "description": "Plugin ids required to load or execute this artifact, with optional version ranges.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "engine": {
+      "type": "object",
+      "properties": {
+        "template": {
+          "description": "Template dialect. Resolved through the renderer plugin registry; unknown dialects are an error only at render time.",
+          "type": "string",
+          "default": "jinja2",
+          "examples": [
+            "jinja2",
+            "handlebars",
+            "fstring",
+            "mustache",
+            "none"
+          ]
+        },
+        "strict": {
+          "description": "If true, referenced-but-missing variables are an error instead of empty string.",
+          "type": "boolean",
+          "default": true
+        },
+        "trim_blocks": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "$ref": "#/$defs/jsonSchema"
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "output": {
+      "type": "object",
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": [
+            "text",
+            "json",
+            "json_schema",
+            "markdown",
+            "xml"
+          ],
+          "default": "text"
+        },
+        "schema": {
+          "$ref": "#/$defs/jsonSchema"
+        }
+      },
+      "additionalProperties": true
+    },
+    "model": {
+      "type": "object",
+      "properties": {
+        "primary": {
+          "description": "Canonical model reference in provider/model form, e.g. anthropic/claude-opus-5.",
+          "type": "string"
+        },
+        "fallbacks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "params": {
+          "description": "Portable parameters. Provider plugins map these onto native API fields.",
+          "type": "object",
+          "properties": {
+            "temperature": {
+              "type": "number",
+              "minimum": 0
+            },
+            "top_p": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "max_tokens": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "stop": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "seed": {
+              "type": "integer"
+            },
+            "reasoning_effort": {
+              "type": "string"
+            },
+            "samples": {
+              "description": "Bounded test-time samples. Assay makes this many complete provider calls; it is not forwarded as a vendor hint.",
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 16,
+              "default": 1
+            },
+            "selection": {
+              "description": "How multiple samples are selected. Majority votes over normalized text plus tool calls. Verifier requires `verifier`.",
+              "type": "string",
+              "enum": [
+                "majority",
+                "verifier"
+              ],
+              "default": "majority"
+            },
+            "verifier": {
+              "description": "PromptFile id that receives `candidate` and returns strict JSON `{score: 0..1, reason: string}`.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "provider_params": {
+          "description": "Escape hatch: raw, provider-namespaced parameters passed through untouched.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "messages": {
+      "description": "Structured chat form. When present it takes precedence over the document body.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "role"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "examples": [
+              "system",
+              "developer",
+              "user",
+              "assistant",
+              "tool"
+            ]
+          },
+          "content": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/contentPart"
+                }
+              }
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "cache": {
+            "type": "boolean",
+            "description": "Hint to place a provider cache breakpoint after this message."
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "tools": {
+      "description": "Tools available to a harness. Either reference a plugin-provided tool with `ref`, or declare one inline with `name` (a declaration-only tool terminates the loop and its arguments become the answer).",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "anyOf": [
+          {
+            "required": [
+              "ref"
+            ]
+          },
+          {
+            "required": [
+              "name"
+            ]
+          }
+        ],
+        "properties": {
+          "ref": {
+            "description": "Plugin-provided tool as `namespace.tool`, or `namespace.*` for all of them.",
+            "type": "string",
+            "pattern": "^[a-z0-9_]+\\.([a-z0-9_]+|\\*)$"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "input_schema": {
+            "$ref": "#/$defs/jsonSchema"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "harness": {
+      "description": "Agent harness definition. Present when `kind: harness`. The four elements of a harness are the agent loop (this block), the tool interface (`tools`), context management (`harness.context`) and control (`harness.control`).",
+      "type": "object",
+      "properties": {
+        "loop": {
+          "description": "Agent loop style. Open vocabulary, resolved by the runtime.",
+          "type": "string",
+          "default": "react",
+          "examples": [
+            "react",
+            "plan-execute",
+            "reflect"
+          ]
+        },
+        "goal": {
+          "type": "string",
+          "description": "Default goal when none is supplied."
+        },
+        "max_iterations": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200,
+          "default": 12
+        },
+        "stream_model_calls": {
+          "type": "boolean",
+          "default": false,
+          "description": "Collect each provider turn through its streaming contract. Fragmented tool calls are assembled before dispatch and every step records delivery evidence."
+        },
+        "budget": {
+          "$ref": "#/$defs/budget"
+        },
+        "context": {
+          "description": "Context management. Strategy is resolved through the `assay.context` plugin registry.",
+          "type": "object",
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "default": "none",
+              "examples": [
+                "none",
+                "truncate",
+                "selective_clear",
+                "compact",
+                "summarize"
+              ]
+            },
+            "max_tokens": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "keep_first": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 1
+            },
+            "keep_last": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 6
+            },
+            "clear_min_chars": {
+              "description": "Minimum old tool-result size eligible for selective clearing.",
+              "type": "integer",
+              "minimum": 1,
+              "default": 256
+            },
+            "clear_tools": {
+              "description": "Optional allow-list of tool names whose old results may be cleared.",
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "max_digest_items": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 40
+            }
+          },
+          "additionalProperties": true
+        },
+        "control": {
+          "description": "Control mechanisms, enforced before every tool call and iteration.",
+          "type": "object",
+          "properties": {
+            "controllers": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "deny": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Tool name globs that may never run."
+            },
+            "allow_tools": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "require_approval": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Tool globs needing an approver callback."
+            },
+            "allow_shell": {
+              "type": "boolean",
+              "default": false
+            },
+            "allow_commands": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "allow_hosts": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "sandbox_root": {
+              "type": "string"
+            },
+            "max_repeated_calls": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_consecutive_errors": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "mock_responses": {
+              "type": "object",
+              "additionalProperties": true
+            }
+          },
+          "additionalProperties": true
+        },
+        "stop_when": {
+          "description": "Declarative stop conditions, evaluated after each iteration.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "type": "string",
+                "examples": [
+                  "tool_called",
+                  "tool_result_contains",
+                  "output_contains",
+                  "no_tool_calls"
+                ]
+              },
+              "tool": {
+                "type": "string"
+              },
+              "value": {}
+            },
+            "additionalProperties": true
+          }
+        },
+        "memory": {
+          "description": "Persistent memory across runs. A separate architectural component from the context window: written deliberately, recalled by relevance. Backend resolved through the `assay.memory` plugin registry.",
+          "type": "object",
+          "properties": {
+            "backend": {
+              "type": "string",
+              "default": "jsonl",
+              "examples": [
+                "jsonl",
+                "memory",
+                "null"
+              ]
+            },
+            "namespace": {
+              "type": "string",
+              "description": "Defaults to the harness id."
+            },
+            "recall": {
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "limit": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "default": 5
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "episodic",
+                        "semantic"
+                      ]
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              ]
+            },
+            "write": {
+              "oneOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "on": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "Trajectory statuses that trigger a write. Writing only failures is often higher value than writing everything."
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "episodic",
+                        "semantic"
+                      ],
+                      "default": "episodic"
+                    },
+                    "max_chars": {
+                      "type": "integer",
+                      "minimum": 100,
+                      "default": 1200
+                    }
+                  },
+                  "additionalProperties": true
+                }
+              ]
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "loop": {
+      "description": "Outer-loop definition. Present when `kind: loop`. A harness equips one run; a loop discovers work, dispatches it, verifies the result, persists state, and decides whether to run again.",
+      "type": "object",
+      "properties": {
+        "trigger": {
+          "type": "string",
+          "default": "manual",
+          "examples": [
+            "manual",
+            "goal",
+            "schedule",
+            "event"
+          ]
+        },
+        "goal": {
+          "type": "string"
+        },
+        "schedule": {
+          "type": "string",
+          "description": "Cron expression when `trigger: schedule`."
+        },
+        "max_cycles": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100,
+          "default": 5
+        },
+        "budget": {
+          "$ref": "#/$defs/budget"
+        },
+        "orchestration": {
+          "description": "How loop steps are dispatched. Sequential preserves handoffs. Concurrent fans independent steps out against one frozen scope snapshot and merges results in declaration order. Supervisor asks a declared artifact for a strict JSON route over known worker ids.",
+          "type": "object",
+          "properties": {
+            "pattern": {
+              "type": "string",
+              "enum": [
+                "sequential",
+                "concurrent",
+                "supervisor"
+              ],
+              "default": "sequential"
+            },
+            "supervisor": {
+              "description": "Prompt or harness id that emits a JSON array, or an object with a route array, of worker step ids.",
+              "type": "string"
+            },
+            "worker_pattern": {
+              "description": "Execution pattern for a supervisor-selected route.",
+              "type": "string",
+              "enum": [
+                "sequential",
+                "concurrent"
+              ],
+              "default": "sequential"
+            },
+            "max_workers": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 16,
+              "default": 4
+            },
+            "detect_handoff_cycles": {
+              "description": "Reject an explicit A-to-B-to-A route before workers run. Defaults true for supervisor routes and false for static sequential pipelines.",
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": true
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "description": {
+                "description": "Short capability description shown to a supervisor.",
+                "type": "string"
+              },
+              "run": {
+                "description": "Id of a harness or prompt to execute.",
+                "type": "string"
+              },
+              "command": {
+                "description": "Shell command to execute instead of an artifact.",
+                "type": "string"
+              },
+              "with": {
+                "type": "object",
+                "additionalProperties": true
+              },
+              "output": {
+                "description": "Variable name to bind this step's output to.",
+                "type": "string"
+              },
+              "on_error": {
+                "type": "string",
+                "enum": [
+                  "continue",
+                  "stop"
+                ],
+                "default": "continue"
+              },
+              "timeout_s": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "verify": {
+                "description": "Per-step verification, same shape as loop.verify. Errors compound across handoffs \u2014 a 90%-accurate step feeding another does not yield 90% \u2014 so checking at each handoff turns a silent corruption into a visible failure at the step that caused it.",
+                "type": "object",
+                "additionalProperties": true
+              }
+            },
+            "anyOf": [
+              {
+                "required": [
+                  "run"
+                ]
+              },
+              {
+                "required": [
+                  "command"
+                ]
+              }
+            ],
+            "additionalProperties": true
+          }
+        },
+        "verify": {
+          "description": "The verification step. An agent reporting success is a claim; a verification step that passes is evidence. Command-based verification is preferred because it does not involve a model.",
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string"
+            },
+            "success_when": {
+              "type": "object",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "exit_code",
+                    "output_contains",
+                    "output_not_contains",
+                    "output_matches"
+                  ]
+                },
+                "value": {}
+              },
+              "additionalProperties": true
+            },
+            "assert": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "value": {
+              "type": "string"
+            },
+            "run": {
+              "description": "Model-graded verification. Weaker than a command; opt in deliberately.",
+              "type": "string"
+            },
+            "timeout_s": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "additionalProperties": true
+        },
+        "on_verify_fail": {
+          "type": "string",
+          "enum": [
+            "retry",
+            "stop",
+            "escalate"
+          ],
+          "default": "retry"
+        },
+        "state": {
+          "description": "Persistence between cycles and between runs.",
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": true
+        },
+        "detect_stalls": {
+          "description": "Stop when a cycle reproduces an earlier cycle's outcome and verification still fails \u2014 the loop is going round in circles. Default true; set false for loops whose steps legitimately produce identical output while the world changes underneath them.",
+          "type": "boolean",
+          "default": true
+        },
+        "status_note": {
+          "description": "Reserved. Loop run statuses are goal_met | max_cycles | budget_exceeded | verification_failed | stalled | routing_loop | failed.",
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "attachments": {
+      "description": "Files or resources composed into the prompt at render time.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ref"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string",
+            "description": "Relative path, promptfile:// id, or URI."
+          },
+          "as": {
+            "type": "string",
+            "description": "Variable name to bind the loaded content to."
+          },
+          "kind": {
+            "type": "string",
+            "examples": [
+              "text",
+              "image",
+              "audio",
+              "pdf",
+              "resource"
+            ]
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "includes": {
+      "description": "Composition: other PromptFiles merged into this one before rendering.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "input": {
+            "type": "object"
+          },
+          "dataset": {
+            "type": "string",
+            "description": "Path or promptfile:// reference to a dataset."
+          },
+          "assert": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "description": "Assertion kind, resolved via the evaluator plugin registry.",
+                  "type": "string",
+                  "examples": [
+                    "contains",
+                    "not_contains",
+                    "equals",
+                    "regex",
+                    "json_valid",
+                    "json_schema",
+                    "llm_judge",
+                    "cost_under",
+                    "latency_under",
+                    "similarity",
+                    "trajectory_accuracy"
+                  ]
+                },
+                "value": {},
+                "weight": {
+                  "type": "number",
+                  "default": 1
+                },
+                "threshold": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": true
+            }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "examples": [
+              "pii",
+              "regex_block",
+              "max_length",
+              "toxicity",
+              "jailbreak",
+              "schema"
+            ]
+          },
+          "stage": {
+            "type": "string",
+            "enum": [
+              "input",
+              "output",
+              "tool_result",
+              "both"
+            ],
+            "default": "output"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "block",
+              "warn",
+              "redact",
+              "retry"
+            ],
+            "default": "block"
+          },
+          "config": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "source_url": {
+          "type": "string"
+        },
+        "derived_from": {
+          "type": "string"
+        },
+        "imported_from": {
+          "type": "string",
+          "examples": [
+            "langfuse",
+            "promptlayer",
+            "dotprompt",
+            "poml",
+            "openai",
+            "braintrust"
+          ]
+        },
+        "commit": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "additionalProperties": true
+    },
+    "deprecation": {
+      "type": "object",
+      "properties": {
+        "since": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "replaced_by": {
+          "type": "string"
+        },
+        "remove_after": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": true
+    },
+    "body": {
+      "description": "Template body. Set implicitly from the markdown document body in .prompt.md files.",
+      "type": "string"
+    },
+    "summary": {
+      "description": "One-line summary used in the tier-1 progressive-disclosure index. Loaded for every client on every listing, so keep it short. Falls back to `description` when absent.",
+      "type": "string",
+      "maxLength": 250
+    },
+    "calibration": {
+      "description": "Judge calibration certificate, written by `assay judge calibrate`. Records agreement with human labels, the sample size, the thresholds applied, and the date. Certificates expire: agreement measured against last quarter's distribution is not evidence about this quarter's.",
+      "type": "object",
+      "properties": {
+        "certified": {
+          "type": "boolean"
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "date": {
+          "type": "string"
+        },
+        "inter_rater_kappa": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Cohen's \u03ba between human raters \u2014 validates the rubric, not the judge."
+        },
+        "judge_spearman": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Judge-vs-human rank correlation."
+        },
+        "thresholds": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "governance": {
+      "description": "Per-artifact governance metadata for regulated deployments. Optional; absence implies nothing about risk classification.",
+      "type": "object",
+      "properties": {
+        "risk_class": {
+          "type": "string",
+          "examples": [
+            "minimal",
+            "limited",
+            "high",
+            "prohibited"
+          ],
+          "description": "Operator's own classification, e.g. under the EU AI Act. This tool records it; it does not determine it."
+        },
+        "owner": {
+          "type": "string"
+        },
+        "reviewed_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reviewed_at": {
+          "type": "string"
+        },
+        "human_oversight": {
+          "type": "string",
+          "description": "How a human can intervene in this artifact's operation."
+        },
+        "data_categories": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Categories of data this artifact may process."
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "patternProperties": {
+    "^x-": {
+      "description": "Reserved namespace for vendor and future extensions. Conforming tools MUST preserve these keys verbatim."
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "jsonSchema": {
+      "description": "Any JSON Schema 2020-12 document.",
+      "type": "object"
+    },
+    "budget": {
+      "description": "Hard ceilings on one run. Exceeding any of them halts execution. A loop without a budget is an unbounded spend.",
+      "type": "object",
+      "properties": {
+        "cost_usd": {
+          "type": "number",
+          "minimum": 0
+        },
+        "tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "wallclock_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "iterations": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "cycles": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tool_calls": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "contentPart": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "examples": [
+            "text",
+            "image",
+            "audio",
+            "file",
+            "tool_use",
+            "tool_result"
+          ]
+        },
+        "text": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "media_type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

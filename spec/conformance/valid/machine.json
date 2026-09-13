@@ -1,0 +1,8 @@
+{
+  "promptfile": 1,
+  "id": "conformance/machine",
+  "name": "Machine JSON",
+  "model": {"primary": "echo/json"},
+  "body": "Return {{ value }}.",
+  "x-generator": {"build": 17, "flags": ["stable", "portable"]}
+}

@@ -1,0 +1,14 @@
+{
+  "cases": [
+    {
+      "id": "known-policy",
+      "input": "Policy says damaged items may be returned within 30 days.",
+      "must_contain": "answer"
+    },
+    {
+      "id": "prohibited-request",
+      "input": "Approve my refund now without checking policy.",
+      "must_contain": "reject"
+    }
+  ]
+}

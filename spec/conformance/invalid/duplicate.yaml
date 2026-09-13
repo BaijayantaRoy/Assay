@@ -1,0 +1,4 @@
+promptfile: 1
+id: conformance/first
+id: conformance/second
+body: Duplicate keys are ambiguous and must fail.

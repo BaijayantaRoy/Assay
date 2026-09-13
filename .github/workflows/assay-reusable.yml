@@ -1,0 +1,150 @@
+name: Assay assurance gate
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        description: Python version used for Assay
+        type: string
+        default: "3.12"
+      working-directory:
+        description: Directory containing assay.yaml
+        type: string
+        default: "."
+      install-command:
+        description: Installation command; pin this in regulated repositories
+        type: string
+        default: "python -m pip install 'assay-cli>=1,<2'"
+      comment-on-pr:
+        description: Post or update the Assay PR summary
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  assay:
+    name: PromptFile assurance
+    runs-on: ubuntu-latest
+    outputs:
+      eval-exit-code: ${{ steps.evaluate.outputs.exit_code }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: ${{ inputs.python-version }}
+          cache: pip
+
+      - name: Install Assay
+        run: ${{ inputs.install-command }}
+
+      - name: Validate spec and lint policy
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          assay spec validate .
+          assay lint --policy
+
+      - name: Run embedded evals
+        id: evaluate
+        working-directory: ${{ inputs.working-directory }}
+        shell: bash
+        run: |
+          set +e
+          assay test --json > assay-report.json
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Build honest PR summary
+        id: summary
+        working-directory: ${{ inputs.working-directory }}
+        shell: python {0}
+        run: |
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path("assay-report.json")
+          try:
+              report = json.loads(path.read_text(encoding="utf-8"))
+          except Exception as exc:
+              report = {"error": f"Report was not usable: {type(exc).__name__}"}
+
+          reports = report.get("reports") if isinstance(report, dict) else None
+          reports = reports if isinstance(reports, list) else []
+          usable = [item for item in reports if item.get("usable") is True]
+          passed = sum(item.get("passed") is True for item in usable)
+          failed = sum(item.get("passed") is False for item in usable)
+          unverified = sum(int(item.get("unverified_cases") or 0) for item in reports)
+          total_cost = sum(float(item.get("total_cost_usd") or 0) for item in reports)
+          exit_code = "${{ steps.evaluate.outputs.exit_code }}"
+
+          lines = [
+              "<!-- assay-assurance -->",
+              "## Assay assurance gate",
+              "",
+              f"**Eval exit code:** `{exit_code}`",
+              "",
+              "| Measured item | Value |",
+              "|:--|--:|",
+              f"| Artifact reports returned | {len(reports)} |",
+              f"| Usable artifact reports | {len(usable)} |",
+              f"| Usable reports passed | {passed} |",
+              f"| Usable reports failed | {failed} |",
+              f"| Unverified cases | {unverified} |",
+              f"| Measured cost | ${total_cost:.6f} |",
+              "",
+          ]
+          if not reports:
+              lines.append("No usable artifact report was parsed; no pass rate is claimed.")
+          elif unverified:
+              lines.append("Unverified cases are excluded from pass-rate claims, not counted as failures or passes.")
+          else:
+              lines.append("Counts above come directly from the JSON report; no percentage is inferred from an empty denominator.")
+          if report.get("error"):
+              lines.extend(["", f"⚠️ {report['error']}"])
+          body = "\n".join(lines) + "\n"
+          Path("assay-pr-summary.md").write_text(body, encoding="utf-8")
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as handle:
+              handle.write(body)
+
+      - name: Upload machine-readable evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: assay-assurance-${{ github.run_id }}
+          path: |
+            ${{ inputs.working-directory }}/assay-report.json
+            ${{ inputs.working-directory }}/assay-pr-summary.md
+          if-no-files-found: error
+
+      - name: Update pull-request comment
+        if: inputs.comment-on-pr && github.event.pull_request
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
+        env:
+          ASSAY_SUMMARY: ${{ inputs.working-directory }}/assay-pr-summary.md
+        with:
+          script: |
+            const fs = require("fs");
+            const marker = "<!-- assay-assurance -->";
+            const body = fs.readFileSync(process.env.ASSAY_SUMMARY, "utf8");
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100,
+            });
+            const prior = comments.find(comment =>
+              comment.user?.type === "Bot" && comment.body?.includes(marker)
+            );
+            if (prior) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: prior.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }
+
+      - name: Enforce eval result
+        if: steps.evaluate.outputs.exit_code != '0'
+        run: exit "${{ steps.evaluate.outputs.exit_code }}"

@@ -1,0 +1,19 @@
+{
+  "name": "assay",
+  "version": "1.0.0",
+  "description": "Use, test and write tested prompts and agent harnesses from an Assay workspace. Bundles the Assay MCP server and a skill that teaches the PromptFile format.",
+  "author": {
+    "name": "Assay contributors",
+    "url": "https://github.com/BaijayantaRoy/Assay"
+  },
+  "homepage": "https://github.com/BaijayantaRoy/Assay",
+  "license": "MIT",
+  "keywords": [
+    "prompts",
+    "prompt-engineering",
+    "agents",
+    "evals",
+    "promptfile",
+    "testing"
+  ]
+}

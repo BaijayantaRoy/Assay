@@ -1,0 +1,62 @@
+# ============================================================
+#  Assay — Docker Compose
+#  Usage: docker-compose up
+#  Ports: backend :8001 | frontend :3001
+# ============================================================
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    ports:
+      - "8001:8001"
+    environment:
+      - ASSAY_WORKSPACE=/app/data/workspace
+      - CORS_ORIGINS=http://localhost:3001
+      - ASSAY_ALLOW_REMOTE_MUTATIONS=true
+      - ASSAY_API_TOKEN=${ASSAY_API_TOKEN:?Set ASSAY_API_TOKEN before starting Compose}
+      - ASSAY_ENABLE_LEGACY_API=${ASSAY_ENABLE_LEGACY_API:-}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+    volumes:
+      - assay-data:/app/data
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/health', timeout=3).read()"
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    ports:
+      - "3001:3000"
+    environment:
+      - ASSAY_BACKEND_URL=http://backend:8001
+      - ASSAY_API_TOKEN=${ASSAY_API_TOKEN:?Set ASSAY_API_TOKEN before starting Compose}
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/delivery').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    restart: unless-stopped
+
+volumes:
+  assay-data:
+    driver: local

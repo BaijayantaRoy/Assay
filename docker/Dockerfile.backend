@@ -1,0 +1,33 @@
+# ============================================================
+#  Assay Backend — Dockerfile
+# ============================================================
+FROM python:3.12-slim
+
+WORKDIR /app
+
+# Install the local core only after its package and build-time spec resources exist.
+COPY packages/assay-core/ ./packages/assay-core/
+COPY spec/ ./spec/
+COPY backend/requirements.txt ./backend/requirements.txt
+RUN pip install --no-cache-dir -r backend/requirements.txt
+
+# Copy backend code and required root files
+COPY backend/ ./backend/
+COPY packs/ ./packs/
+COPY alembic.ini ./
+COPY LICENSE ./LICENSE
+
+# Create data directories
+RUN mkdir -p /app/data
+
+# Expose port
+EXPOSE 8001
+
+# Environment defaults
+ENV DATABASE_URL=sqlite:////app/data/database.db
+ENV CHROMA_DATA_PATH=/app/data/chroma_data
+ENV CORS_ORIGINS=http://localhost:3001
+ENV ASSAY_WORKSPACE=/app/data/workspace
+
+# Run with uvicorn
+CMD ["python", "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8001"]

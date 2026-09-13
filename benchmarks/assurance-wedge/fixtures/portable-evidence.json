@@ -1,0 +1,50 @@
+{
+  "fixture": "portable-evidence-retention-v1",
+  "required_field_count": 14,
+  "required_fields": [
+    "artifact.id",
+    "artifact.template",
+    "artifact.model.primary",
+    "artifact.evals[0].id",
+    "artifact.evals[0].input.message",
+    "artifact.evals[0].assert[0].type",
+    "artifact.evals[0].assert[0].value",
+    "artifact.controls.deny[0]",
+    "artifact.lifecycle.stage",
+    "artifact.lifecycle.version",
+    "artifact.provenance.author",
+    "artifact.provenance.source",
+    "artifact.extensions.future_vendor.nested[0].flag",
+    "artifact.extensions.future_vendor.nullable"
+  ],
+  "artifact": {
+    "id": "benchmark/portable-refund-triage",
+    "template": "Classify {{ message }} without inventing policy.",
+    "model": { "primary": "provider/model" },
+    "evals": [
+      {
+        "id": "explicit-escalation",
+        "input": { "message": "The refund policy is unavailable." },
+        "assert": [
+          { "type": "contains", "value": "escalate" }
+        ]
+      }
+    ],
+    "controls": { "deny": ["refund.approve"] },
+    "lifecycle": { "stage": "candidate", "version": 7 },
+    "provenance": { "author": "benchmark-task-author", "source": "shared-fixture-v1" },
+    "extensions": {
+      "future_vendor": {
+        "nested": [{ "flag": true }],
+        "nullable": null
+      }
+    }
+  },
+  "procedure": [
+    "Represent the artifact through the product's supported configuration path.",
+    "Export it using the product's supported export mechanism.",
+    "Import the export into a clean environment without relying on the original dashboard state.",
+    "Perform an offline review and record every preserved required field.",
+    "Count a field as preserved only when its value and semantic role survive; an explicit loss warning is evidence of detection, not preservation."
+  ]
+}
