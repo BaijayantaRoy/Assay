@@ -497,10 +497,14 @@ function ChatPanel({ onError }: { onError: (e: unknown) => void }) {
 
   const current = prompts.find((p) => p.id === selected);
 
-  useEffect(() => {
+  // A different prompt starts with empty inputs and no stale export. Adjusting state
+  // during render (not in an effect) avoids a second, cascading render.
+  const [shownFor, setShownFor] = useState(selected);
+  if (shownFor !== selected) {
+    setShownFor(selected);
     setValues({});
     setResult(null);
-  }, [selected]);
+  }
 
   const render = async () => {
     if (!selected) return;

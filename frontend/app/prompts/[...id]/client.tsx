@@ -53,9 +53,16 @@ export default function Client({ params }: { params: Promise<{ id: string[] }> }
   const [evaluating, setEvaluating] = useState(false);
   const [evalError, setEvalError] = useState<unknown>(null);
 
+  // Navigating to another prompt shows the loading state again, set during render
+  // rather than synchronously inside the effect.
+  const [loadingFor, setLoadingFor] = useState(id);
+  if (loadingFor !== id) {
+    setLoadingFor(id);
+    setLoading(true);
+  }
+
   useEffect(() => {
     if (!id) return;
-    setLoading(true);
     Promise.all([getPrompt(id), promptHistory(id).catch(() => ({ id, history: [] }))])
       .then(([d, h]) => {
         setDetail(d);

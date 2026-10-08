@@ -51,7 +51,9 @@ def build() -> tuple[bytes, dict[str, Any]]:
     payloads: list[tuple[str, bytes]] = []
     for path in source_files():
         relative = path.relative_to(HERE).as_posix()
-        payloads.append((relative, path.read_bytes()))
+        # Normalise line endings so a Windows checkout (core.autocrlf) and a Linux CI
+        # runner build the same bytes.
+        payloads.append((relative, path.read_bytes().replace(b"\r\n", b"\n")))
 
     manifest = "".join(
         f"{hashlib.sha256(content).hexdigest()}  {name}\n"
