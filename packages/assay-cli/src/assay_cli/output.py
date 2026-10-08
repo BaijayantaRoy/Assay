@@ -175,6 +175,77 @@ def render_attack(result) -> None:
           f"{result.attack.id:<12} {result.attack.category:<22}{suffix}")
 
 
+def _one_line(text: str, limit: int = 100) -> str:
+    text = " ".join(str(text or "").split())
+    return text if len(text) <= limit else text[: limit - 1] + "…"
+
+
+def render_step(step) -> None:
+    """One agent step, printed as it completes: what it did, and what came back."""
+    cost = step.completion.cost_usd if step.completion else 0.0
+    print(f"  {_c(f'step {step.index}', BOLD)}  "
+          + _c(f"{step.context_tokens} ctx tokens  ${cost:.6f}", DIM))
+    if step.context_action:
+        dim(f"    context: {step.context_action}")
+    results = list(step.tool_results)
+    for i, call in enumerate(step.tool_calls):
+        result = next(
+            (r for r in results if r.call is call or (call.id and r.call.id == call.id)),
+            results[i] if i < len(results) else None,
+        )
+        if result is None:
+            mark = _c("pending", DIM)
+        elif result.denied:
+            mark = _c("denied", YELLOW)
+        elif result.is_error:
+            mark = _c("error", RED)
+        else:
+            mark = _c("ok", GREEN)
+        args = _one_line(json.dumps(call.arguments, default=str), 60)
+        print(f"    → {call.name}({args})  {mark}")
+        if result is not None and result.denied and result.denied_reason:
+            dim(f"      {_one_line(result.denied_reason)}")
+        elif result is not None and result.is_error:
+            print(f"      {_c(_one_line(result.content), RED)}")
+    if step.text and not step.tool_calls:
+        print(f"    {_one_line(step.text)}")
+
+
+def render_trajectory_summary(trajectory) -> None:
+    """The whole run: outcome, spend, and anything that went wrong on the way."""
+    heading("Agent run")
+    kv("harness", trajectory.harness_id)
+    kv("model", trajectory.model or "default")
+    status = trajectory.status
+    kv("status", _c(status, GREEN) if status == "completed" else _c(status, RED))
+    if trajectory.stop_reason:
+        kv("stop reason", trajectory.stop_reason)
+    kv("iterations", trajectory.iterations)
+    kv("tool calls", len(trajectory.tool_call_names))
+    kv("cost", f"${trajectory.cost_usd:.6f}")
+    kv("tokens", trajectory.total_tokens)
+    kv("wallclock", f"{trajectory.wallclock_s:.2f}s")
+
+    # Tri-state on purpose: None means nothing checked the result, which is not a pass.
+    if trajectory.verified is True:
+        kv("verified", _c("yes", GREEN))
+    elif trajectory.verified is False:
+        kv("verified", _c("no", RED))
+    else:
+        kv("verified", _c("not checked", YELLOW))
+    if trajectory.verification_detail:
+        dim(f"  {trajectory.verification_detail}")
+
+    if trajectory.tool_errors:
+        warn(f"{len(trajectory.tool_errors)} tool call(s) failed")
+    if trajectory.denied_calls:
+        warn(f"{len(trajectory.denied_calls)} tool call(s) denied by policy")
+
+    if trajectory.output:
+        heading("Output")
+        print(trajectory.output)
+
+
 def render_redteam_summary(report) -> None:
     payload = report.to_dict()
 
