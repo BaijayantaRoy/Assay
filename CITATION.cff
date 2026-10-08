@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+title: Assay
+message: >-
+  If you use Assay or implement the PromptFile format, please cite this
+  repository. The specification is separately licensed CC BY 4.0 and may be
+  implemented by anyone, including in competing products.
+type: software
+authors:
+  - given-names: Baijayanta
+    family-names: Roy
+    alias: BaijayantaRoy
+version: 1.0.0
+date-released: 2026-10-10
+repository-code: https://github.com/BaijayantaRoy/Assay
+url: https://baijayantaroy.github.io/Assay/
+license: MIT
+abstract: >-
+  An open, git-native engine for writing, running and proving out LLM prompts
+  and agents. Prompts, agent harnesses and verified loops are stored as
+  PromptFiles - readable text files carrying the template, model binding,
+  guardrails and their own eval cases - and are exercised through a CLI, a REST
+  API, an MCP server, SDKs and a web workbench. Its design commitment is that a
+  reported number never overstates what was measured: an unverified loop reports
+  not checked rather than passing, and a rate with no usable denominator is
+  withheld rather than shown as zero.
+keywords:
+  - llm
+  - prompt-engineering
+  - agents
+  - evaluation
+  - ai-assurance
+  - promptfile
+  - mcp

@@ -2,6 +2,16 @@
   "name": "@assay/sdk",
   "version": "1.0.0",
   "description": "TypeScript SDK for Assay — versioned, evaluated prompts for any LLM.",
+  "author": "Baijayanta Roy",
+  "homepage": "https://github.com/BaijayantaRoy/Assay#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BaijayantaRoy/Assay.git",
+    "directory": "packages/sdk-typescript"
+  },
+  "bugs": {
+    "url": "https://github.com/BaijayantaRoy/Assay/issues"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -12,16 +22,32 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && node tests/stream.mjs",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "prepublishOnly": "npm run build"
   },
-  "keywords": ["prompt", "llm", "prompt-engineering", "promptfile", "mcp", "evals", "ai"],
+  "keywords": [
+    "prompt",
+    "llm",
+    "prompt-engineering",
+    "promptfile",
+    "mcp",
+    "evals",
+    "ai"
+  ],
   "license": "MIT",
-  "engines": { "node": ">=18" },
-  "devDependencies": { "typescript": "^5.6.0" },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0"
+  },
   "dependencies": {}
 }

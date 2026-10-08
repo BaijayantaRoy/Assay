@@ -4,7 +4,35 @@ All notable changes to this project will be documented in this file.
 This project follows the compatibility policy in
 [ADR-0004](architecture/adr/0004-compatibility-policy.md).
 
-## [Unreleased]
+## [1.0.0] - 2026-10-10 — First public release
+
+The first public release. It brings together the July foundation and
+everything added since, under one version number across every package.
+
+### Changed
+
+- **Model catalogue refreshed** — the bundled offline catalogue, the workbench's model
+  table and every example now use current models (GPT-6 Astra, GPT-6.1 Sol, GPT-6 Luna;
+  Claude Opus 5.5, Sonnet 5.5, Haiku 5.5; Gemini 3.1 Pro, Gemini 3.8 Flash), with prices
+  checked against each provider's own pricing page on 2026-10-08. Entries that could not be
+  verified were removed rather than kept with guessed prices.
+- **EU AI Act dates corrected** — the governance notes now reflect the Digital Omnibus
+  (Regulation (EU) 2026/1744), which moved high-risk obligations to 2 December 2027
+  (Annex III) and 2 August 2028 (Annex I).
+- **Workbench on Next.js 16.3.8** — picks up the fix for a critical Next.js advisory, plus
+  patched transitive dependencies. CI and the frontend image move to Node.js 22, since
+  Node.js 20 is end-of-life.
+
+### Fixed
+
+- **`assay agent` crashed in its normal, human-readable mode** — the step-by-step trace and
+  run summary were never implemented, so only `--json` worked. Both now render, and the
+  summary reports an unverified run as *not checked*, never as a pass.
+- **The workbench stayed on its loading state under Next.js 16.3+** when opened at
+  `127.0.0.1`, because the dev server blocked hot-reload resources for that origin.
+- **The benchmark operator kit was not reproducible across platforms** — a Windows checkout
+  produced different bytes from a Linux one. Line endings are now normalised.
+- **`@assay/promptfile` dependency advisory** — `fast-uri` updated to a patched release.
 
 ### Added
 
@@ -64,7 +92,7 @@ This project follows the compatibility policy in
   WCAG checks across light, dark, and eye-care modes. The checks found and fixed the light
   palette's low-contrast accents and a pre-hydration dark-theme flash.
 
-## [1.0.0] - 2026-07-27 — Foundation
+## Foundation - 2026-07-27 (private, released as part of 1.0.0)
 
 The project is re-architected around a published file format and a plugin-first engine.
 The web workbench and its unversioned API continue to work unchanged.

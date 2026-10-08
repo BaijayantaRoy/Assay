@@ -1,0 +1,54 @@
+name: Specification question or defect
+description: Something in PromptFile v1 is ambiguous, contradictory, or hard to implement
+labels: [spec]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **These are the most valuable issues this project receives.** PromptFile v1 is
+        published under CC BY 4.0 and is meant to be implemented by other tools, including
+        competing ones. An ambiguity you hit while implementing it is a defect in the spec,
+        not a misunderstanding on your part — and a place where the reference implementation
+        got away with something is exactly what we want to hear about.
+
+  - type: input
+    id: section
+    attributes:
+      label: Which part of the spec?
+      placeholder: "e.g. §4 conformance rules, conforming writer rule 4"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is ambiguous, contradictory, or unimplementable?
+    validations:
+      required: true
+
+  - type: textarea
+    id: file
+    attributes:
+      label: A file that demonstrates it
+      description: The smallest PromptFile where two readers could reasonably disagree.
+      render: markdown
+
+  - type: dropdown
+    id: implementing
+    attributes:
+      label: Are you implementing the format?
+      options:
+        - "Yes — in another language or tool"
+        - "Yes — in this one"
+        - "No, I am writing PromptFiles by hand"
+    validations:
+      required: true
+
+  - type: textarea
+    id: roundtrip
+    attributes:
+      label: Round-trip
+      description: |
+        A conforming writer must preserve unknown fields, including the `x-` namespace,
+        through parse → write → parse. If you found a file that does not survive that,
+        say so here — it is the bug this project most wants to receive.

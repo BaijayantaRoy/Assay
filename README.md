@@ -446,6 +446,10 @@ prove critical checks can fail. See the dated [competitive benchmark](docs/archi
 | [Roadmap & known limitations](docs/architecture/ROADMAP.md) | What's shipped, what isn't, what's rough |
 | [User guide](docs/user_guide.md) | Day-to-day usage |
 | [Contributing](docs/CONTRIBUTING.md) | How to help |
+| [Support](SUPPORT.md) | Where to ask, and what to try first |
+| [Security policy](SECURITY.md) | How to report a vulnerability privately |
+| [Governance](GOVERNANCE.md) | Who decides, and the invariants that are not up for a vote |
+| [Changelog](docs/CHANGELOG.md) | What changed in each release |
 | [End-to-end suite](tests/e2e/) | Tests driving the installed binary, real servers, MCP stdio, and the prompt proxy |
 
 ---
@@ -477,3 +481,10 @@ The highest-leverage things you can do:
 
 MIT for the code. The [specification](spec/promptfile-v1.md) is CC BY 4.0 — implement it
 anywhere, including in products that compete with this one.
+
+If you use Assay or implement PromptFile in your own work, [CITATION.cff](CITATION.cff) has
+the citation details.
+
+---
+
+<p align="center">Built and maintained by <a href="https://github.com/BaijayantaRoy">Baijayanta Roy</a>.</p>

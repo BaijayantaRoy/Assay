@@ -9,7 +9,15 @@ description = "Python SDK for Assay — one API for local PromptFiles and remote
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
+authors = [{ name = "Baijayanta Roy" }]
 dependencies = ["httpx>=0.27"]
+
+[project.urls]
+Homepage = "https://github.com/BaijayantaRoy/Assay"
+Documentation = "https://baijayantaroy.github.io/Assay/"
+Repository = "https://github.com/BaijayantaRoy/Assay"
+Issues = "https://github.com/BaijayantaRoy/Assay/issues"
+Changelog = "https://github.com/BaijayantaRoy/Assay/blob/main/docs/CHANGELOG.md"
 
 [project.optional-dependencies]
 # Embedded mode needs the engine; remote mode does not.

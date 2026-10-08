@@ -7,13 +7,51 @@ on:
 
 permissions:
   contents: read
-  id-token: write
-  attestations: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  build-and-attest:
-    name: Build, inventory, and attest
+  # A tag can be pushed from any commit, and ci.yml only runs on branches and pull
+  # requests. Without this gate a tag on an unverified commit would still produce
+  # attested, published artifacts.
+  verify:
+    name: Re-verify at the tagged commit
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install packages
+        run: |
+          pip install -e "packages/assay-core[dev]" -e packages/assay-cli -e packages/assay-mcp
+          pip install -r backend/requirements-dev.txt
+
+      - name: Core, backend, end-to-end and benchmark suites
+        run: |
+          python -m pytest packages/assay-core/tests -q
+          python -m pytest backend/tests -q
+          python -m pytest tests/e2e -q
+          python -m pytest tests/benchmark -q
+
+      - name: Shipped artifacts conform, and every mutation anchor is live
+        run: |
+          assay lint && assay spec validate .
+          python tests/mutation/run_mutations.py --check
+
+  build-and-attest:
+    name: Build, inventory, attest and release
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # create the GitHub Release
+      id-token: write
+      attestations: write
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
@@ -27,7 +65,7 @@ jobs:
 
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: "20"
+          node-version: "22"
           cache: npm
           cache-dependency-path: |
             packages/sdk-typescript/package-lock.json
@@ -126,3 +164,27 @@ jobs:
           path: dist/
           if-no-files-found: error
           retention-days: 30
+
+      - name: Publish the GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          python - <<'PY'
+          import os, pathlib, re
+          version = os.environ['RELEASE_TAG'].removeprefix('v')
+          text = pathlib.Path('docs/CHANGELOG.md').read_text(encoding='utf-8')
+          match = re.search(rf'^## \[{re.escape(version)}\][^\n]*\n(.*?)(?=^## )', text, re.S | re.M)
+          if not match:
+              raise SystemExit(f'docs/CHANGELOG.md has no section for {version}')
+          notes = match.group(1).strip()
+          notes += ('\n\n---\n\nEvery file below is listed in `SHA256SUMS` and carries a GitHub '
+                    'build-provenance attestation. Verify one with\n'
+                    '`gh attestation verify <file> --repo ${{ github.repository }}`.\n')
+          pathlib.Path('release-notes.md').write_text(notes, encoding='utf-8')
+          PY
+          gh release create "$RELEASE_TAG" dist/* \
+            --title "Assay $RELEASE_TAG" \
+            --notes-file release-notes.md \
+            --verify-tag

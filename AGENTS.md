@@ -124,6 +124,6 @@ assay redteam <harness-id>             # measure its injection defences
 - **Do not edit generated blocks** between the `assay:begin` and `assay:end` markers in
   this file; run `assay agents init` instead.
 
-<sub>Generated from assay by `assay agents init` on 2026-09-12. Re-run after adding or removing artifacts.</sub>
+<sub>Generated from assay by `assay agents init` on 2026-10-08. Re-run after adding or removing artifacts.</sub>
 
 <!-- assay:end -->

@@ -1,0 +1,66 @@
+version: 2
+updates:
+  # Pinned action SHAs are a security control here - the CI `secrets` job fails the
+  # build if any third-party action is not commit-pinned. Dependabot updates the SHA
+  # and records the version in the PR, which keeps the pin honest rather than stale.
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "ci" }
+    labels: [dependencies, ci]
+
+  # The published packages. The previous draft covered backend/ and frontend/ only,
+  # which is everything EXCEPT the artifacts that get published.
+  - package-ecosystem: pip
+    directory: "/packages/assay-core"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "deps(core)" }
+    labels: [dependencies, python]
+  - package-ecosystem: pip
+    directory: "/packages/assay-cli"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "deps(cli)" }
+    labels: [dependencies, python]
+  - package-ecosystem: pip
+    directory: "/packages/assay-mcp"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "deps(mcp)" }
+    labels: [dependencies, python]
+  - package-ecosystem: pip
+    directory: "/packages/sdk-python"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "deps(sdk)" }
+    labels: [dependencies, python]
+  - package-ecosystem: npm
+    directory: "/packages/sdk-typescript"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "deps(sdk-ts)" }
+    labels: [dependencies, frontend]
+  - package-ecosystem: npm
+    directory: "/packages/promptfile-typescript"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "deps(promptfile-ts)" }
+    labels: [dependencies, frontend]
+
+  # The application surfaces.
+  - package-ecosystem: pip
+    directory: "/backend"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "deps" }
+    labels: [dependencies, python]
+    open-pull-requests-limit: 5
+  - package-ecosystem: npm
+    directory: "/frontend"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "deps" }
+    labels: [dependencies, frontend]
+    open-pull-requests-limit: 5
+    groups:
+      next:
+        patterns: ["next", "eslint-config-next", "react", "react-dom", "@types/react*"]
+
+  - package-ecosystem: docker
+    directory: "/docker"
+    schedule: { interval: weekly }
+    commit-message: { prefix: "deps(docker)" }
+    labels: [dependencies, docker]

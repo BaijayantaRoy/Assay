@@ -9,7 +9,15 @@ description = "assay — the Assay command line. Git-native prompt engineering."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
+authors = [{ name = "Baijayanta Roy" }]
 dependencies = ["assay-core>=1.0.0,<2"]
+
+[project.urls]
+Homepage = "https://github.com/BaijayantaRoy/Assay"
+Documentation = "https://baijayantaroy.github.io/Assay/"
+Repository = "https://github.com/BaijayantaRoy/Assay"
+Issues = "https://github.com/BaijayantaRoy/Assay/issues"
+Changelog = "https://github.com/BaijayantaRoy/Assay/blob/main/docs/CHANGELOG.md"
 
 [project.optional-dependencies]
 rich = ["rich>=13.0"]

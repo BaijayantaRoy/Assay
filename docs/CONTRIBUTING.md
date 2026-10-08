@@ -6,8 +6,10 @@ is green.
 
 ## Set up a checkout
 
+Fork the repository on GitHub, then clone your fork:
+
 ```bash
-git clone https://github.com/YOUR_USERNAME/Assay.git
+git clone https://github.com/<your-username>/Assay.git
 cd Assay
 pip install -e packages/assay-core -e packages/assay-cli -e packages/assay-mcp
 cd frontend && npm install && cd ..

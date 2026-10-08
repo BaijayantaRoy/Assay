@@ -44,7 +44,7 @@ For staging, production, or local environments that prefer containerization.
 
 ### Architecture Details
 * **Backend Container**: Runs Python 3.12 slim, exposed on port `8001`.
-* **Frontend Container**: Runs a multi-stage Node 20 alpine build (standalone mode), exposed on port `3001`.
+* **Frontend Container**: Runs a multi-stage Node 22 alpine build (standalone mode), exposed on port `3001`.
 * **Readiness**: Compose waits for the backend's `/health` probe before starting the
   frontend, and both services publish container health checks. A running process is not
   treated as a ready service.
@@ -145,7 +145,7 @@ also not proof that a particular release was attested. Verify a completed releas
 GitHub CLI and the actual downloaded subject:
 
 ```bash
-gh attestation verify assay_core-1.0.0-py3-none-any.whl --repo baijayanta/Assay
+gh attestation verify assay_core-1.0.0-py3-none-any.whl --repo BaijayantaRoy/Assay
 sha256sum --check SHA256SUMS
 ```
 

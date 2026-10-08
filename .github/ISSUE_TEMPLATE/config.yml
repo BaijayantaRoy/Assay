@@ -1,10 +1,16 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 contact_links:
+  - name: Question or discussion
+    url: https://github.com/BaijayantaRoy/Assay/discussions
+    about: How do I, is this supposed to, what would you do here. Not a bug.
   - name: Security vulnerability
     url: https://github.com/BaijayantaRoy/Assay/security/advisories/new
     about: >
       Report privately, not as a public issue. This includes any case where Assay
       reported a number that overstated its own security.
+  - name: Support and troubleshooting
+    url: https://github.com/BaijayantaRoy/Assay/blob/main/SUPPORT.md
+    about: The things that go wrong most often, and what to try first.
   - name: Spec change (PromptFile v1)
     url: https://github.com/BaijayantaRoy/Assay/blob/main/docs/architecture/adr/0004-compatibility-policy.md
     about: >

@@ -1,0 +1,62 @@
+name: Feature request
+description: Propose a capability, an assertion type, a plugin point, or a workflow
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening this: **can it already be a plugin?** Thirteen extension points are
+        public (`assay plugins`, and the table in the README). If the answer is yes,
+        writing the plugin is faster than this issue, and it proves the extension point
+        works for someone who did not design it — which is the single most useful
+        contribution to this project.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What can't you do today?
+      description: The situation, not the solution. What were you trying to prove about a prompt or an agent when you hit the wall?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you add?
+      description: If it touches a PromptFile, show the frontmatter you would want to write.
+      render: yaml
+    validations:
+      required: true
+
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Which surface?
+      multiple: true
+      options:
+        - PromptFile format / spec
+        - CLI
+        - MCP server
+        - REST API
+        - Web workbench
+        - SDK (Python or TypeScript)
+        - A plugin point
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: How would it be tested?
+      description: |
+        Every executable artifact here needs at least one eval case, and a test that cannot
+        fail is worse than no test. What assertion would prove this works — and what would
+        make it go red?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What else did you consider, and why is it worse?

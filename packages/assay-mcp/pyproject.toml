@@ -9,8 +9,16 @@ description = "MCP server for Assay — serve your prompt library to any MCP cli
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
+authors = [{ name = "Baijayanta Roy" }]
 keywords = ["mcp", "model-context-protocol", "prompt", "llm", "claude", "cursor"]
 dependencies = ["assay-core>=1.0.0,<2"]
+
+[project.urls]
+Homepage = "https://github.com/BaijayantaRoy/Assay"
+Documentation = "https://baijayantaroy.github.io/Assay/"
+Repository = "https://github.com/BaijayantaRoy/Assay"
+Issues = "https://github.com/BaijayantaRoy/Assay/issues"
+Changelog = "https://github.com/BaijayantaRoy/Assay/blob/main/docs/CHANGELOG.md"
 
 [project.scripts]
 assay-mcp = "assay_mcp.server:main"

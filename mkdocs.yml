@@ -1,8 +1,8 @@
 site_name: Assay
 site_description: Portable assurance-as-code for prompts, agents, and verified loops
-site_url: https://baijayanta.github.io/Assay/
+site_url: https://baijayantaroy.github.io/Assay/
 repo_url: https://github.com/BaijayantaRoy/Assay
-repo_name: baijayanta/Assay
+repo_name: BaijayantaRoy/Assay
 edit_uri: edit/main/docs/
 docs_dir: docs
 strict: true
