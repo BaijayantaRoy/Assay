@@ -134,7 +134,7 @@ authentication failures are never retried automatically. Override the bounded po
 
 ```yaml
 model:
-  primary: openai/gpt-5
+  primary: openai/gpt-6.1-sol
   params:
     rate_limit_retries: 3       # 0..5
     rate_limit_backoff_s: 0.5   # 0..10

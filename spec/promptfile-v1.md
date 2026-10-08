@@ -96,8 +96,8 @@ output:
       confidence: { type: number }
 
 model:
-  primary: anthropic/claude-opus-5
-  fallbacks: [openai/gpt-5.5, google/gemini-3-pro]
+  primary: anthropic/claude-opus-5-5
+  fallbacks: [openai/gpt-6.1-sol, google/gemini-3.1-pro-preview]
   params:
     temperature: 0
     max_tokens: 512

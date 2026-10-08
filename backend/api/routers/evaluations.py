@@ -197,7 +197,7 @@ def _run_evaluation_background(
             generation_error = None
             try:
                 result = run_llm(
-                    model=params.get("model", "gpt-4o-mini"),
+                    model=params.get("model", "gpt-6-luna"),
                     content=version.content,
                     variables=inputs,
                     params=params,
@@ -303,8 +303,8 @@ def start_evaluation(
         "prompt_version_id": "uuid",
         "dataset_id": "uuid",         # optional
         "evaluator_type": "llm_judge", # llm_judge | human | exact_match
-        "judge_model": "gpt-4o-mini", # model for LLM-as-Judge
-        "model": "gpt-4o",            # model for running the prompt
+        "judge_model": "gpt-6-luna", # model for LLM-as-Judge
+        "model": "gpt-6.1-sol",            # model for running the prompt
         "temperature": 0.7,
         "max_tokens": 1024
       }
@@ -312,7 +312,7 @@ def start_evaluation(
     version_id = body.get("prompt_version_id")
     dataset_id = body.get("dataset_id")
     evaluator_type = body.get("evaluator_type", "llm_judge")
-    judge_model = body.get("judge_model", "gpt-4o-mini")
+    judge_model = body.get("judge_model", "gpt-6-luna")
 
     version = session.get(PromptVersion, UUID(version_id))
     if not version:
@@ -338,7 +338,7 @@ def start_evaluation(
     session.refresh(run)
 
     params = {
-        "model": body.get("model", "gpt-4o-mini"),
+        "model": body.get("model", "gpt-6-luna"),
         "temperature": body.get("temperature", 0.7),
         "max_tokens": body.get("max_tokens", 1024),
     }
@@ -418,14 +418,14 @@ def compare_models(
     Body:
       {
         "prompt_version_id": "uuid",
-        "models": ["gpt-4o", "claude-sonnet-4-20250514", "gemini-2.5-flash"],
+        "models": ["gpt-6.1-sol", "claude-sonnet-5-5", "gemini-3.8-flash"],
         "dataset_id": "uuid",   # optional
         "variables": {},        # optional — single test
         "params": {}
       }
     """
     version_id = body.get("prompt_version_id")
-    models = body.get("models", ["gpt-4o-mini"])
+    models = body.get("models", ["gpt-6-luna"])
     dataset_id = body.get("dataset_id")
 
     version = session.get(PromptVersion, UUID(version_id))
@@ -450,7 +450,7 @@ def compare_models(
         background_tasks.add_task(
             _run_evaluation_background,
             str(run.id), version_id, dataset_id,
-            "llm_judge", params.get("judge_model", "gpt-4o-mini"), merged_params,
+            "llm_judge", params.get("judge_model", "gpt-6-luna"), merged_params,
         )
         runs.append(run)
 

@@ -167,7 +167,7 @@ def seed():
                     prompt_id=prompt.id,
                     version_number=1,
                     content=tmpl["content"],
-                    config={"model": "gpt-4"},
+                    config={"model": "gpt-6.1-sol"},
                     variables=variables,
                     commit_message=tmpl["commit_message"],
                 )

@@ -1,11 +1,11 @@
 """
 LLM Service — Real multi-provider execution with token counting and cost estimation.
 
-Supported providers (May 2026):
-  - OpenAI   : gpt-4o, gpt-4o-mini, gpt-4-turbo, o3, o3-mini
-  - Anthropic : claude-opus-4, claude-sonnet-4, claude-haiku-3-5
-  - Google   : gemini-2.5-pro, gemini-2.5-flash, gemini-2.0-flash
-  - Ollama   : any locally-running model (llama3.3, phi4, mistral, etc.)
+Supported providers (model list checked 2026-10-08):
+  - OpenAI    : gpt-6-astra, gpt-6.1-sol, gpt-6-luna
+  - Anthropic : claude-opus-5-5, claude-sonnet-5-5, claude-haiku-5-5
+  - Google    : gemini-3.1-pro-preview, gemini-3.8-flash
+  - Ollama    : any locally-running model (gemma4, qwen3.5, llama3.1, etc.)
 """
 
 import os

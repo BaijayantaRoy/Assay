@@ -71,7 +71,7 @@ def create_chain(body: dict, session: Session = Depends(get_session)):
             chain_id=chain.id,
             step_order=idx + 1,
             prompt_version_id=uuid.UUID(pv_id) if pv_id else uuid.uuid4(),
-            model=s.get("model", "gpt-4o"),
+            model=s.get("model", "gpt-6.1-sol"),
             output_variable=s.get("output_variable", f"step_{idx+1}_output"),
             config=s.get("config", {}),
         )

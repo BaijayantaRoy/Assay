@@ -106,7 +106,7 @@ MIGRATIONS = [
         ab_test_id TEXT NOT NULL REFERENCES ab_tests(id),
         label TEXT NOT NULL,
         prompt_version_id TEXT NOT NULL REFERENCES prompt_versions(id),
-        model TEXT NOT NULL DEFAULT 'gpt-4o',
+        model TEXT NOT NULL DEFAULT 'gpt-6.1-sol',
         runs INTEGER NOT NULL DEFAULT 0,
         thumbs_up INTEGER NOT NULL DEFAULT 0,
         thumbs_down INTEGER NOT NULL DEFAULT 0,
@@ -139,7 +139,7 @@ MIGRATIONS = [
         chain_id TEXT NOT NULL REFERENCES prompt_chains(id),
         step_order INTEGER NOT NULL,
         prompt_version_id TEXT NOT NULL REFERENCES prompt_versions(id),
-        model TEXT NOT NULL DEFAULT 'gpt-4o',
+        model TEXT NOT NULL DEFAULT 'gpt-6.1-sol',
         output_variable TEXT NOT NULL,
         config TEXT NOT NULL DEFAULT '{}'
     )""",

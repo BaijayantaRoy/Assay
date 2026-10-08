@@ -61,7 +61,7 @@ class PromptVersion(SQLModel, table=True):
     prompt_id: UUID = Field(foreign_key="prompts.id")
     version_number: int
     content: str = Field(sa_column=Column(Text))
-    # config holds model params: {"model": "gpt-4o", "temperature": 0.7, ...}
+    # config holds model params: {"model": "gpt-6.1-sol", "temperature": 0.7, ...}
     config: dict = Field(default={}, sa_type=JSON)
     variables: List[str] = Field(default=[], sa_type=JSON)
     commit_message: Optional[str] = None
@@ -227,7 +227,7 @@ class ABVariant(SQLModel, table=True):
     ab_test_id: UUID = Field(foreign_key="ab_tests.id")
     label: str  # "A" or "B"
     prompt_version_id: UUID = Field(foreign_key="prompt_versions.id")
-    model: str = Field(default="gpt-4o")
+    model: str = Field(default="gpt-6.1-sol")
     runs: int = Field(default=0)
     thumbs_up: int = Field(default=0)
     thumbs_down: int = Field(default=0)
@@ -275,7 +275,7 @@ class ChainStep(SQLModel, table=True):
     chain_id: UUID = Field(foreign_key="prompt_chains.id")
     step_order: int
     prompt_version_id: UUID = Field(foreign_key="prompt_versions.id")
-    model: str = Field(default="gpt-4o")
+    model: str = Field(default="gpt-6.1-sol")
     output_variable: str  # name of variable where this step's output is stored
     config: dict = Field(default={}, sa_type=JSON)
 
@@ -287,7 +287,7 @@ class ChainStep(SQLModel, table=True):
 
 class LLMModel(SQLModel, table=True):
     __tablename__ = "llm_models"
-    id: str = Field(primary_key=True, description="The API model identifier, e.g. gpt-5.5-omni")
+    id: str = Field(primary_key=True, description="The API model identifier, e.g. gpt-6.1-sol")
     name: str = Field(index=True)
     provider: str = Field(index=True)
     context_window: str = Field(default="128k")

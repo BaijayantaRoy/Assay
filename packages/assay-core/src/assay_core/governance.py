@@ -2,9 +2,11 @@
 
 Why this exists
 ---------------
-EU AI Act obligations for high-risk systems became fully applicable on **2 August 2026**.
-They require automatic logging of events across a system's lifetime, with deployers
-retaining those logs for **at least six months**. ISO 42001 supplies the management-system
+EU AI Act obligations for high-risk systems were due on 2 August 2026; the Digital Omnibus
+(Regulation (EU) 2026/1744) moved them to **2 December 2027** for stand-alone Annex III
+systems and **2 August 2028** for systems embedded in Annex I products. They require
+automatic logging of events across a system's lifetime, with deployers retaining those
+logs for **at least six months**. ISO 42001 supplies the management-system
 scaffolding; NIST AI RMF is voluntary but shows up in procurement.
 
 This project already had most of what an auditor wants and never said so. Prompts live in

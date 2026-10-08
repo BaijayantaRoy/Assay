@@ -42,7 +42,7 @@ async def run_comparison(body: dict, session: Session = Depends(get_session)):
     Run the same prompt against multiple models simultaneously.
     Body: {
       prompt_version_id: str,
-      models: ["gpt-4o", "claude-sonnet-4-...", "gemini-2.5-flash"],
+      models: ["gpt-6.1-sol", "claude-sonnet-5-5", "gemini-3.8-flash"],
       variables: { key: value },
       params: { temperature: 0.7, max_tokens: 1024 }
     }

@@ -195,7 +195,7 @@
       "type": "object",
       "properties": {
         "primary": {
-          "description": "Canonical model reference in provider/model form, e.g. anthropic/claude-opus-5.",
+          "description": "Canonical model reference in provider/model form, e.g. anthropic/claude-opus-5-5.",
           "type": "string"
         },
         "fallbacks": {

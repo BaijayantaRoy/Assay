@@ -9,7 +9,7 @@ name: acme-prompts
 prompts: ./prompts            # root to scan
 store: file                   # store plugin id
 defaults:
-  model: anthropic/claude-opus-5
+  model: anthropic/claude-opus-5-5
   params: { temperature: 0.2 }
   renderer: jinja2
 providers:

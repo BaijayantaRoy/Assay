@@ -132,7 +132,7 @@ Point it at a real model when you're ready:
 
 ```bash
 export ANTHROPIC_API_KEY=sk-ant-...
-assay run demo/hello -v name=World -m anthropic/claude-opus-4
+assay run demo/hello -v name=World -m anthropic/claude-opus-5-5
 ```
 
 ### Expose it to your coding agent
@@ -188,8 +188,8 @@ output:
       category: { type: string, enum: [REFUND, BILLING, OTHER] }
 
 model:
-  primary: anthropic/claude-opus-4
-  fallbacks: [openai/gpt-4o]
+  primary: anthropic/claude-opus-5-5
+  fallbacks: [openai/gpt-6.1-sol]
   params: { temperature: 0 }
 
 evals:                                # the prompt tests itself

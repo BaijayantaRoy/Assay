@@ -51,7 +51,7 @@ ACTUAL OUTPUT:
 """
         judge_res = await asyncio.get_event_loop().run_in_executor(
             None,
-            lambda: run_llm("gpt-4o", judge_prompt)
+            lambda: run_llm("gpt-6.1-sol", judge_prompt)
         )
         
         try:
@@ -91,7 +91,7 @@ Output ONLY the raw variations separated by this exact delimiter: "===VARIATION_
 """
     res = await asyncio.get_event_loop().run_in_executor(
         None,
-        lambda: run_llm("gpt-4o", mutation_prompt, params={"temperature": 0.8})
+        lambda: run_llm("gpt-6.1-sol", mutation_prompt, params={"temperature": 0.8})
     )
     
     content = res.get("response", "")
@@ -105,7 +105,7 @@ Output ONLY the raw variations separated by this exact delimiter: "===VARIATION_
 async def optimize_prompt(
     draft_prompt: str, 
     test_cases: List[Dict[str, str]], 
-    target_model: str = "gpt-4o",
+    target_model: str = "gpt-6.1-sol",
     max_iterations: int = 3
 ) -> OptimizationResult:
     """

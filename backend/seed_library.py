@@ -712,7 +712,7 @@ def seed_library():
                     variables=variables,
                     commit_message=f"Initial version — {category}",
                     environment="production",
-                    config={"model": "gpt-4o", "temperature": 0.7, "max_tokens": 2048},
+                    config={"model": "gpt-6.1-sol", "temperature": 0.7, "max_tokens": 2048},
                 )
                 session.add(version)
                 session.commit()

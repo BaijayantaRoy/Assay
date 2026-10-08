@@ -50,7 +50,7 @@ Example Output:
     
     res = await asyncio.get_event_loop().run_in_executor(
         None,
-        lambda: run_llm("gpt-4o", generator_prompt, params={"temperature": 0.7})
+        lambda: run_llm("gpt-6.1-sol", generator_prompt, params={"temperature": 0.7})
     )
     
     content = res.get("response", "").strip()

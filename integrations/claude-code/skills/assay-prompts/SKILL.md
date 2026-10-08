@@ -62,7 +62,7 @@ version: 1
 kind: prompt
 status: draft
 model:
-  primary: anthropic/claude-opus-4
+  primary: anthropic/claude-opus-5-5
   params: { temperature: 0 }
 input:
   schema:

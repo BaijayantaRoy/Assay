@@ -63,7 +63,7 @@ def create_test(body: dict, session: Session = Depends(get_session)):
             ab_test_id=test.id,
             label=label,
             prompt_version_id=UUID(v_data["prompt_version_id"]),
-            model=v_data.get("model", "gpt-4o"),
+            model=v_data.get("model", "gpt-6.1-sol"),
         )
         session.add(variant)
 

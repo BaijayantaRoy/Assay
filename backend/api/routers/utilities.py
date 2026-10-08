@@ -73,7 +73,7 @@ def run_playground(
       {
         "content": "...",               # optional — uses version content if omitted
         "prompt_version_id": "uuid",    # optional
-        "model": "gpt-4o",             # required
+        "model": "gpt-6.1-sol",             # required
         "variables": {"key": "val"},    # optional
         "params": {                     # optional model params
             "temperature": 0.7,
@@ -85,7 +85,7 @@ def run_playground(
     """
     content = body.get("content")
     version_id = body.get("prompt_version_id")
-    model = body.get("model", "gpt-4o-mini")
+    model = body.get("model", "gpt-6-luna")
     variables = body.get("variables", {})
     params = body.get("params", {})
     save_log = body.get("save_log", False)

@@ -280,8 +280,10 @@ users drawing false conclusions from our own tooling.
 
 ### 3.11 Governance & audit — gap: medium
 
-Concrete and dated: **EU AI Act high-risk obligations become fully applicable 2 August
-2026** — six days from now. High-risk systems must **automatically log events across their
+Concrete and dated: EU AI Act high-risk obligations were due 2 August 2026. The Digital
+Omnibus (Regulation (EU) 2026/1744, in force since July 2026) moved them to **2 December
+2027** for stand-alone Annex III systems and **2 August 2028** for Annex I product-embedded
+systems. The obligations themselves did not change: high-risk systems must **automatically log events across their
 lifetime**, with deployers retaining logs **at least six months**. ISO 42001 supplies the
 management-system scaffolding; NIST AI RMF is voluntary but referenced in procurement.
 

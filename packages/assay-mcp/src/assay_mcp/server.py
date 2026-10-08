@@ -591,7 +591,7 @@ TOOLS: list[dict] = [
             "type": "object", "required": ["id"],
             "properties": {"id": {"type": "string"}, "variables": _VARIABLES,
                            "model": {"type": "string",
-                                     "description": "Override, e.g. anthropic/claude-opus-5."}},
+                                     "description": "Override, e.g. anthropic/claude-opus-5-5."}},
         },
         "annotations": {"readOnlyHint": False, "destructiveHint": False, "openWorldHint": True},
     },
