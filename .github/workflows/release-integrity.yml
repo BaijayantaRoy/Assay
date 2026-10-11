@@ -102,6 +102,9 @@ jobs:
           python -m pip install build==1.5.0
           python scripts/sync_core_resources.py --check
           python -m build packages/assay-core --outdir dist
+          # The check imports the extracted wheel in isolation but needs its runtime
+          # dependencies on this interpreter; installing the wheel brings exactly those.
+          python -m pip install dist/assay_core-*.whl
           python scripts/check_core_distribution.py dist
           python -m build packages/assay-cli --outdir dist
           python -m build packages/assay-mcp --outdir dist
