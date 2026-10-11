@@ -1,9 +1,14 @@
 import { defineConfig } from "@playwright/test";
+import fs from "node:fs";
 import path from "node:path";
 
 const repoRoot = path.resolve(__dirname, "..");
+// A Windows checkout started with `start-assay.bat` has its own venv; a CI runner does not,
+// and uses the Python that setup-python put on PATH.
 const localPython = path.join(repoRoot, "venv", "Scripts", "python.exe");
-const python = process.env.ASSAY_TEST_PYTHON || (process.platform === "win32" ? localPython : "python");
+const python =
+  process.env.ASSAY_TEST_PYTHON ||
+  (process.platform === "win32" && fs.existsSync(localPython) ? localPython : "python");
 
 export default defineConfig({
   testDir: "./tests/browser",

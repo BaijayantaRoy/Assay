@@ -43,12 +43,9 @@ updates:
     labels: [dependencies, frontend]
 
   # The application surfaces.
-  - package-ecosystem: pip
-    directory: "/backend"
-    schedule: { interval: weekly }
-    commit-message: { prefix: "deps" }
-    labels: [dependencies, python]
-    open-pull-requests-limit: 5
+  # backend/requirements.txt installs assay-core from the monorepo with a path relative
+  # to the repository root, which Dependabot cannot resolve from /backend. Its third-party
+  # dependencies are still covered by Dependabot alerts through the dependency graph.
   - package-ecosystem: npm
     directory: "/frontend"
     schedule: { interval: weekly }
